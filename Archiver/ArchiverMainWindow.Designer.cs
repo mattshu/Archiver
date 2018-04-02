@@ -38,14 +38,8 @@ namespace Archiver
             this.radFilesUntouchedSince = new System.Windows.Forms.RadioButton();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.btnStop = new System.Windows.Forms.Button();
-            this.panelTop = new System.Windows.Forms.Panel();
-            this.dataGridView = new System.Windows.Forms.DataGridView();
             this.panelBottom = new System.Windows.Forms.Panel();
-            this.chkIncludeSubDirs = new System.Windows.Forms.CheckBox();
-            this.btnRefresh = new System.Windows.Forms.Button();
-            this.btnScan = new System.Windows.Forms.Button();
-            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.dataGridView = new System.Windows.Forms.DataGridView();
             this.colFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colExtension = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -53,10 +47,15 @@ namespace Archiver
             this.colDateAccessed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDateCreated = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panelTop = new System.Windows.Forms.Panel();
+            this.chkIncludeSubDirs = new System.Windows.Forms.CheckBox();
+            this.btnRefresh = new System.Windows.Forms.Button();
+            this.btnScan = new System.Windows.Forms.Button();
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.contextMenu.SuspendLayout();
-            this.panelTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
-            this.panelBottom.SuspendLayout();
+            this.panelTop.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenu
@@ -66,6 +65,7 @@ namespace Archiver
             this.ctxOpenFile});
             this.contextMenu.Name = "contextMenuStrip1";
             this.contextMenu.Size = new System.Drawing.Size(169, 48);
+            this.contextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenu_Opening);
             this.contextMenu.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenu_ItemClicked);
             // 
             // ctxOpenFileLocation
@@ -124,22 +124,25 @@ namespace Archiver
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
             // 
-            // panelTop
+            // panelBottom
             // 
-            this.panelTop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelTop.Controls.Add(this.dataGridView);
-            this.panelTop.Location = new System.Drawing.Point(3, 5);
-            this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(970, 370);
-            this.panelTop.TabIndex = 5;
+            this.panelBottom.Location = new System.Drawing.Point(0, 43);
+            this.panelBottom.Name = "panelBottom";
+            this.panelBottom.Size = new System.Drawing.Size(970, 354);
+            this.panelBottom.TabIndex = 5;
             // 
             // dataGridView
             // 
             this.dataGridView.AllowUserToAddRows = false;
             this.dataGridView.AllowUserToDeleteRows = false;
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colFile,
             this.colExtension,
@@ -149,78 +152,14 @@ namespace Archiver
             this.colDateCreated,
             this.colPath});
             this.dataGridView.ContextMenuStrip = this.contextMenu;
-            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView.EnableHeadersVisualStyles = false;
-            this.dataGridView.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView.Location = new System.Drawing.Point(3, 48);
             this.dataGridView.MultiSelect = false;
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
             this.dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView.Size = new System.Drawing.Size(970, 370);
+            this.dataGridView.Size = new System.Drawing.Size(970, 351);
             this.dataGridView.TabIndex = 1;
             this.dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_ColumnHeaderMouseClick);
-            // 
-            // panelBottom
-            // 
-            this.panelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelBottom.Controls.Add(this.chkIncludeSubDirs);
-            this.panelBottom.Controls.Add(this.btnRefresh);
-            this.panelBottom.Controls.Add(this.btnStop);
-            this.panelBottom.Controls.Add(this.dateTimePicker);
-            this.panelBottom.Controls.Add(this.btnScan);
-            this.panelBottom.Controls.Add(this.radFilesOlderThan);
-            this.panelBottom.Controls.Add(this.radFilesUntouchedSince);
-            this.panelBottom.Location = new System.Drawing.Point(3, 362);
-            this.panelBottom.MinimumSize = new System.Drawing.Size(700, 43);
-            this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(970, 43);
-            this.panelBottom.TabIndex = 6;
-            // 
-            // chkIncludeSubDirs
-            // 
-            this.chkIncludeSubDirs.AutoSize = true;
-            this.chkIncludeSubDirs.Checked = true;
-            this.chkIncludeSubDirs.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIncludeSubDirs.Location = new System.Drawing.Point(512, 13);
-            this.chkIncludeSubDirs.Name = "chkIncludeSubDirs";
-            this.chkIncludeSubDirs.Size = new System.Drawing.Size(131, 17);
-            this.chkIncludeSubDirs.TabIndex = 5;
-            this.chkIncludeSubDirs.Text = "Include Subdirectories";
-            this.chkIncludeSubDirs.UseVisualStyleBackColor = true;
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefresh.Enabled = false;
-            this.btnRefresh.Location = new System.Drawing.Point(806, 4);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(75, 34);
-            this.btnRefresh.TabIndex = 4;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // btnScan
-            // 
-            this.btnScan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnScan.Location = new System.Drawing.Point(9, 3);
-            this.btnScan.Name = "btnScan";
-            this.btnScan.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnScan.Size = new System.Drawing.Size(108, 34);
-            this.btnScan.TabIndex = 1;
-            this.btnScan.Text = "Scan Directory...";
-            this.btnScan.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnScan.UseVisualStyleBackColor = true;
-            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
-            // 
-            // statusStrip
-            // 
-            this.statusStrip.Location = new System.Drawing.Point(0, 405);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(977, 22);
-            this.statusStrip.TabIndex = 7;
-            this.statusStrip.Text = "statusStrip";
             // 
             // colFile
             // 
@@ -284,23 +223,85 @@ namespace Archiver
             this.colPath.Name = "colPath";
             this.colPath.ReadOnly = true;
             // 
+            // panelTop
+            // 
+            this.panelTop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelTop.Controls.Add(this.chkIncludeSubDirs);
+            this.panelTop.Controls.Add(this.btnRefresh);
+            this.panelTop.Controls.Add(this.btnStop);
+            this.panelTop.Controls.Add(this.panelBottom);
+            this.panelTop.Controls.Add(this.dateTimePicker);
+            this.panelTop.Controls.Add(this.btnScan);
+            this.panelTop.Controls.Add(this.radFilesOlderThan);
+            this.panelTop.Controls.Add(this.radFilesUntouchedSince);
+            this.panelTop.Location = new System.Drawing.Point(3, 5);
+            this.panelTop.MinimumSize = new System.Drawing.Size(700, 43);
+            this.panelTop.Name = "panelTop";
+            this.panelTop.Size = new System.Drawing.Size(970, 43);
+            this.panelTop.TabIndex = 6;
+            // 
+            // chkIncludeSubDirs
+            // 
+            this.chkIncludeSubDirs.AutoSize = true;
+            this.chkIncludeSubDirs.Checked = true;
+            this.chkIncludeSubDirs.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkIncludeSubDirs.Location = new System.Drawing.Point(512, 13);
+            this.chkIncludeSubDirs.Name = "chkIncludeSubDirs";
+            this.chkIncludeSubDirs.Size = new System.Drawing.Size(131, 17);
+            this.chkIncludeSubDirs.TabIndex = 5;
+            this.chkIncludeSubDirs.Text = "Include Subdirectories";
+            this.chkIncludeSubDirs.UseVisualStyleBackColor = true;
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefresh.Enabled = false;
+            this.btnRefresh.Location = new System.Drawing.Point(806, 4);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(75, 34);
+            this.btnRefresh.TabIndex = 4;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // btnScan
+            // 
+            this.btnScan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnScan.Location = new System.Drawing.Point(9, 3);
+            this.btnScan.Name = "btnScan";
+            this.btnScan.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnScan.Size = new System.Drawing.Size(108, 34);
+            this.btnScan.TabIndex = 1;
+            this.btnScan.Text = "Scan Directory...";
+            this.btnScan.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnScan.UseVisualStyleBackColor = true;
+            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.Location = new System.Drawing.Point(0, 405);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(977, 22);
+            this.statusStrip.TabIndex = 7;
+            this.statusStrip.Text = "statusStrip";
+            // 
             // ArchiverMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(977, 427);
-            this.Controls.Add(this.panelBottom);
-            this.Controls.Add(this.statusStrip);
+            this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.panelTop);
+            this.Controls.Add(this.statusStrip);
             this.MinimumSize = new System.Drawing.Size(750, 255);
             this.Name = "ArchiverMainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Archiver";
             this.contextMenu.ResumeLayout(false);
-            this.panelTop.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
-            this.panelBottom.ResumeLayout(false);
-            this.panelBottom.PerformLayout();
+            this.panelTop.ResumeLayout(false);
+            this.panelTop.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -311,8 +312,8 @@ namespace Archiver
         private System.Windows.Forms.RadioButton radFilesUntouchedSince;
         private System.Windows.Forms.DateTimePicker dateTimePicker;
         private System.Windows.Forms.Button btnStop;
-        private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.Panel panelBottom;
+        private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.CheckBox chkIncludeSubDirs;
         private System.Windows.Forms.StatusStrip statusStrip;

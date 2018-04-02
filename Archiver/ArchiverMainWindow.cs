@@ -16,13 +16,15 @@ namespace Archiver {
         public SearchStyle searchStyle { get; private set; } = SearchStyle.ForFilesOlderThan;
         public SearchConditions searchConditions { get; private set; }
 
+
+
         private void btnScan_Click(object sender, EventArgs e) {
             BuildNewFileList();
             LoadItemsFromFileList();
             btnRefresh.Enabled = true;  // TODO TEMP
         }
 
-        private void BuildNewFileList() {
+        private void BuildNewFileList() { 
             folderBrowserDialog = new FolderBrowserDialog();
             if (folderBrowserDialog.ShowDialog() != DialogResult.OK) return;
             SetSearchConditions();
@@ -53,26 +55,32 @@ namespace Archiver {
             colFile = new DataGridViewTextBoxColumn {
                 DataPropertyName = "Name",
                 Name = "File",
+                Width = 150
             };
             colExtension = new DataGridViewTextBoxColumn {
                 DataPropertyName = "Extension",
                 Name = "Extension",
+                Width = 75
             };
             colSize = new DataGridViewTextBoxColumn {
                 DataPropertyName = "Size",
                 Name = "Size",
+                Width = 75
             };
             colDateModified = new DataGridViewTextBoxColumn {
                 DataPropertyName = "DateModified",
                 Name = "Date Modified",
+                Width = 125
             };
             colDateAccessed = new DataGridViewTextBoxColumn {
                 DataPropertyName = "DateAccessed",
                 Name = "Date Accessed",
+                Width = 125
             };
             colDateCreated = new DataGridViewTextBoxColumn {
                 DataPropertyName = "DateCreated",
                 Name = "Date Created",
+                Width = 125
             };
             colPath = new DataGridViewTextBoxColumn {
                 DataPropertyName = "Path",
@@ -94,9 +102,15 @@ namespace Archiver {
         
 
         private void contextMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
-            if (e.ClickedItem == ctxOpenFileLocation) { 
+            if (dataGridView.SelectedRows.Count <= 0) return;
+            string name = (string)dataGridView.SelectedRows[0].Cells["File"].Value;
+            string path = (string)dataGridView.SelectedRows[0].Cells["Path"].Value;
+            if (e.ClickedItem == ctxOpenFileLocation) {
+                Process.Start("explorer.exe", path);
             }
             else if (e.ClickedItem == ctxOpenFile) {
+                string pathToFile = path + "\\" + name;
+                Process.Start("explorer.exe", pathToFile);
             }
         }
 
@@ -109,6 +123,11 @@ namespace Archiver {
 
         private void RefreshDataGridView() {
             
+        }
+
+        private void contextMenu_Opening(object sender, CancelEventArgs e) {
+            if (dataGridView.SelectedRows.Count <= 0)
+                e.Cancel = true;
         }
 
         /*private void radFilesOlderThan_CheckedChanged(object sender, EventArgs e) {
