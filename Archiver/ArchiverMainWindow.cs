@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Archiver {
     public partial class ArchiverMainWindow : Form {
-
         private SortOrder sortOrder = SortOrder.Ascending;
         private List<FileData> fileList = new List<FileData>();
         public SearchStyle searchStyle { get; private set; } = SearchStyle.ForFilesOlderThan;
@@ -97,19 +93,20 @@ namespace Archiver {
             BuildNewFileList();
             LoadItemsFromFileList();
         }
+
         private void btnRefresh_Click(object sender, EventArgs e) {
             RefreshDataGridView();
         }
 
         private void contextMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
             if (dataGridView.SelectedRows.Count <= 0) return;
-            string name = (string) dataGridView.SelectedRows[0].Cells["File"].Value;
-            string path = (string) dataGridView.SelectedRows[0].Cells["Path"].Value;
+            var name = (string) dataGridView.SelectedRows[0].Cells["File"].Value;
+            var path = (string) dataGridView.SelectedRows[0].Cells["Path"].Value;
             if (e.ClickedItem == ctxOpenFileLocation) {
                 Process.Start("explorer.exe", path);
             }
             else if (e.ClickedItem == ctxOpenFile) {
-                string pathToFile = path + "\\" + name;
+                var pathToFile = path + "\\" + name;
                 Process.Start("explorer.exe", pathToFile);
             }
         }
@@ -145,7 +142,9 @@ namespace Archiver {
         }
 
         private void SetSearchStyle() {
-            searchStyle = radFilesOlderThan.Checked ? SearchStyle.ForFilesOlderThan : SearchStyle.ForFilesUntouchedSince;
+            searchStyle = radFilesOlderThan.Checked
+                ? SearchStyle.ForFilesOlderThan
+                : SearchStyle.ForFilesUntouchedSince;
         }
 
         public ArchiverMainWindow() {
