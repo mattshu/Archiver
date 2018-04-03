@@ -1,6 +1,7 @@
 ﻿namespace Archiver {
     public enum SearchStyle {
-        ForFilesOlderThan,
-        ForFilesUntouchedSince
+        DateModified,
+        DateAccessed,
+        DateCreated
     }
 }

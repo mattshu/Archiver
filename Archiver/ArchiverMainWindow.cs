@@ -8,8 +8,7 @@ using System.Windows.Forms;
 namespace Archiver {
     public partial class ArchiverMainWindow : Form {
 
-        public SearchStyle searchStyle { get; private set; } = SearchStyle.ForFilesOlderThan;
-        public SearchConditions searchConditions { get; private set; }
+        public SearchFilter searchFilter;
 
         private List<FileData> fileList = new List<FileData>();
         private string parentFolder;
@@ -35,8 +34,24 @@ namespace Archiver {
             btnRefresh.Enabled = DataListHasItems();
         }
 
-        private void radFilesOlderThan_CheckedChanged(object sender, EventArgs e) {
-            SetSearchStyle();
+        private void radOlderThan_CheckedChanged(object sender, EventArgs e) {
+            searchFilter.Period = GetSearchPeriod();
+        }
+
+        private void chkFilter_CheckedChanged(object sender, EventArgs e) {
+            EnableFilterControls(chkFilter.Checked);
+        }
+
+        private void EnableFilterControls(bool condition) {
+            cbxSearchStyle.Enabled = condition;
+            radOlderThan.Enabled = condition;
+            radNewerThan.Enabled = condition;
+            dateTimePicker.Enabled = condition;
+        }
+
+        private void cbxSearchStyle_SelectedIndexChanged(object sender, EventArgs e) {
+            Debug.WriteLine(sender.GetType());
+            searchFilter.Style = GetSearchStyle();
             btnRefresh.Enabled = DataListHasItems();
         }
 
@@ -58,7 +73,7 @@ namespace Archiver {
         }
 
         private void RefreshDataGridView() {
-            SetSearchConditions();
+            SetSearchFilter();
             BuildFileList();
             LoadItemsFromFileList();
         }
@@ -114,29 +129,38 @@ namespace Archiver {
             return folderBrowserDialog.ShowDialog() != DialogResult.OK ? null : folderBrowserDialog.SelectedPath;
         }
 
-        private void SetSearchStyle() {
-            searchStyle = radFilesOlderThan.Checked
-                ? SearchStyle.ForFilesOlderThan
-                : SearchStyle.ForFilesUntouchedSince;
-        }
-
-        private void SetSearchConditions() {
-            searchConditions = new SearchConditions {
-                Style = searchStyle,
+        private void SetSearchFilter() {
+            searchFilter = new SearchFilter {
+                Style = GetSearchStyle(),
+                Period = GetSearchPeriod(),
                 Date = dateTimePicker.Value,
-                Option = chkIncludeSubDirs.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly
+                Option = GetSearchOption(),
+                Enabled = chkFilter.Checked
             };
         }
 
+        private SearchStyle GetSearchStyle() {
+            return (SearchStyle) cbxSearchStyle.SelectedIndex;
+        }
+
+        private SearchPeriod GetSearchPeriod() {
+            return radOlderThan.Checked ? SearchPeriod.OlderThan : SearchPeriod.NewerThan;
+        }
+
+        private SearchOption GetSearchOption() {
+            return chkIncludeSubDirs.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+        }
+
         private void BuildNewFileList() {
-            parentFolder = SetParentFolder();
-            if (parentFolder == null) return;
-            SetSearchConditions();
+            var tryParentFolder = SetParentFolder();
+            if (tryParentFolder == null) return;
+            parentFolder = tryParentFolder;
+            SetSearchFilter();
             BuildFileList();
         }
 
         private void BuildFileList() {
-            var getFileListForm = new GetFileListForm(parentFolder, searchConditions);
+            var getFileListForm = new GetFileListForm(parentFolder, searchFilter);
             if (getFileListForm.ShowDialog() != DialogResult.OK || getFileListForm.fileList.Count <= 0) return;
             fileList = getFileListForm.fileList;
         }
@@ -151,7 +175,11 @@ namespace Archiver {
 
         public ArchiverMainWindow() {
             InitializeComponent();
+            searchFilter = new SearchFilter();
         }
 
+        private void ArchiverMainWindow_Shown(object sender, EventArgs e) {
+            cbxSearchStyle.SelectedIndex = 0;
+        }
     }
 }

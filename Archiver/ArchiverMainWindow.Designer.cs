@@ -34,18 +34,9 @@ namespace Archiver
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ctxOpenFileLocation = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxOpenFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.radFilesOlderThan = new System.Windows.Forms.RadioButton();
-            this.radFilesUntouchedSince = new System.Windows.Forms.RadioButton();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
-            this.btnStop = new System.Windows.Forms.Button();
             this.panelBottom = new System.Windows.Forms.Panel();
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.panelTop = new System.Windows.Forms.Panel();
-            this.chkIncludeSubDirs = new System.Windows.Forms.CheckBox();
-            this.btnRefresh = new System.Windows.Forms.Button();
-            this.btnScan = new System.Windows.Forms.Button();
-            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.colFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colExtension = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -53,6 +44,16 @@ namespace Archiver
             this.colDateAccessed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDateCreated = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panelTop = new System.Windows.Forms.Panel();
+            this.radNewerThan = new System.Windows.Forms.RadioButton();
+            this.radOlderThan = new System.Windows.Forms.RadioButton();
+            this.cbxSearchStyle = new System.Windows.Forms.ComboBox();
+            this.chkFilter = new System.Windows.Forms.CheckBox();
+            this.chkIncludeSubDirs = new System.Windows.Forms.CheckBox();
+            this.btnRefresh = new System.Windows.Forms.Button();
+            this.btnScan = new System.Windows.Forms.Button();
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.contextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panelTop.SuspendLayout();
@@ -80,51 +81,15 @@ namespace Archiver
             this.ctxOpenFile.Size = new System.Drawing.Size(168, 22);
             this.ctxOpenFile.Text = "Open file";
             // 
-            // radFilesOlderThan
-            // 
-            this.radFilesOlderThan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.radFilesOlderThan.AutoSize = true;
-            this.radFilesOlderThan.Checked = true;
-            this.radFilesOlderThan.Location = new System.Drawing.Point(171, 3);
-            this.radFilesOlderThan.Name = "radFilesOlderThan";
-            this.radFilesOlderThan.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.radFilesOlderThan.Size = new System.Drawing.Size(114, 17);
-            this.radFilesOlderThan.TabIndex = 2;
-            this.radFilesOlderThan.TabStop = true;
-            this.radFilesOlderThan.Text = "for Files older than:";
-            this.radFilesOlderThan.UseVisualStyleBackColor = true;
-            this.radFilesOlderThan.CheckedChanged += new System.EventHandler(this.radFilesOlderThan_CheckedChanged);
-            // 
-            // radFilesUntouchedSince
-            // 
-            this.radFilesUntouchedSince.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.radFilesUntouchedSince.AutoSize = true;
-            this.radFilesUntouchedSince.Location = new System.Drawing.Point(139, 20);
-            this.radFilesUntouchedSince.Name = "radFilesUntouchedSince";
-            this.radFilesUntouchedSince.Size = new System.Drawing.Size(146, 17);
-            this.radFilesUntouchedSince.TabIndex = 2;
-            this.radFilesUntouchedSince.Text = "for Files untouched since:";
-            this.radFilesUntouchedSince.UseVisualStyleBackColor = true;
-            // 
             // dateTimePicker
             // 
             this.dateTimePicker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.dateTimePicker.Location = new System.Drawing.Point(291, 13);
+            this.dateTimePicker.Enabled = false;
+            this.dateTimePicker.Location = new System.Drawing.Point(403, 10);
             this.dateTimePicker.Name = "dateTimePicker";
             this.dateTimePicker.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker.TabIndex = 3;
             this.dateTimePicker.ValueChanged += new System.EventHandler(this.dateTimePicker_ValueChanged);
-            // 
-            // btnStop
-            // 
-            this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStop.Enabled = false;
-            this.btnStop.Location = new System.Drawing.Point(887, 3);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(75, 34);
-            this.btnStop.TabIndex = 4;
-            this.btnStop.Text = "Stop";
-            this.btnStop.UseVisualStyleBackColor = true;
             // 
             // panelBottom
             // 
@@ -163,69 +128,6 @@ namespace Archiver
             this.dataGridView.Size = new System.Drawing.Size(970, 351);
             this.dataGridView.TabIndex = 1;
             this.dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_ColumnHeaderMouseClick);
-            // 
-            // panelTop
-            // 
-            this.panelTop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelTop.Controls.Add(this.chkIncludeSubDirs);
-            this.panelTop.Controls.Add(this.btnRefresh);
-            this.panelTop.Controls.Add(this.btnStop);
-            this.panelTop.Controls.Add(this.panelBottom);
-            this.panelTop.Controls.Add(this.dateTimePicker);
-            this.panelTop.Controls.Add(this.btnScan);
-            this.panelTop.Controls.Add(this.radFilesOlderThan);
-            this.panelTop.Controls.Add(this.radFilesUntouchedSince);
-            this.panelTop.Location = new System.Drawing.Point(3, 5);
-            this.panelTop.MinimumSize = new System.Drawing.Size(700, 43);
-            this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(970, 43);
-            this.panelTop.TabIndex = 6;
-            // 
-            // chkIncludeSubDirs
-            // 
-            this.chkIncludeSubDirs.AutoSize = true;
-            this.chkIncludeSubDirs.Checked = true;
-            this.chkIncludeSubDirs.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIncludeSubDirs.Location = new System.Drawing.Point(497, 18);
-            this.chkIncludeSubDirs.Name = "chkIncludeSubDirs";
-            this.chkIncludeSubDirs.Size = new System.Drawing.Size(131, 17);
-            this.chkIncludeSubDirs.TabIndex = 5;
-            this.chkIncludeSubDirs.Text = "Include Subdirectories";
-            this.chkIncludeSubDirs.UseVisualStyleBackColor = true;
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefresh.Enabled = false;
-            this.btnRefresh.Location = new System.Drawing.Point(806, 4);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(75, 34);
-            this.btnRefresh.TabIndex = 4;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // btnScan
-            // 
-            this.btnScan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnScan.Location = new System.Drawing.Point(9, 3);
-            this.btnScan.Name = "btnScan";
-            this.btnScan.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnScan.Size = new System.Drawing.Size(108, 34);
-            this.btnScan.TabIndex = 1;
-            this.btnScan.Text = "Scan Directory...";
-            this.btnScan.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnScan.UseVisualStyleBackColor = true;
-            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
-            // 
-            // statusStrip
-            // 
-            this.statusStrip.Location = new System.Drawing.Point(0, 405);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(977, 22);
-            this.statusStrip.TabIndex = 7;
-            this.statusStrip.Text = "statusStrip";
             // 
             // colFile
             // 
@@ -283,6 +185,121 @@ namespace Archiver
             this.colPath.ReadOnly = true;
             this.colPath.Width = 252;
             // 
+            // panelTop
+            // 
+            this.panelTop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelTop.Controls.Add(this.radNewerThan);
+            this.panelTop.Controls.Add(this.radOlderThan);
+            this.panelTop.Controls.Add(this.cbxSearchStyle);
+            this.panelTop.Controls.Add(this.chkFilter);
+            this.panelTop.Controls.Add(this.chkIncludeSubDirs);
+            this.panelTop.Controls.Add(this.btnRefresh);
+            this.panelTop.Controls.Add(this.panelBottom);
+            this.panelTop.Controls.Add(this.dateTimePicker);
+            this.panelTop.Controls.Add(this.btnScan);
+            this.panelTop.Location = new System.Drawing.Point(3, 5);
+            this.panelTop.MinimumSize = new System.Drawing.Size(700, 43);
+            this.panelTop.Name = "panelTop";
+            this.panelTop.Size = new System.Drawing.Size(970, 43);
+            this.panelTop.TabIndex = 6;
+            // 
+            // radNewerThan
+            // 
+            this.radNewerThan.AutoSize = true;
+            this.radNewerThan.Enabled = false;
+            this.radNewerThan.Location = new System.Drawing.Point(317, 20);
+            this.radNewerThan.Name = "radNewerThan";
+            this.radNewerThan.Size = new System.Drawing.Size(80, 17);
+            this.radNewerThan.TabIndex = 8;
+            this.radNewerThan.Text = "Newer than";
+            this.radNewerThan.UseVisualStyleBackColor = true;
+            // 
+            // radOlderThan
+            // 
+            this.radOlderThan.AutoSize = true;
+            this.radOlderThan.Checked = true;
+            this.radOlderThan.Enabled = false;
+            this.radOlderThan.Location = new System.Drawing.Point(317, 3);
+            this.radOlderThan.Name = "radOlderThan";
+            this.radOlderThan.Size = new System.Drawing.Size(74, 17);
+            this.radOlderThan.TabIndex = 8;
+            this.radOlderThan.TabStop = true;
+            this.radOlderThan.Text = "Older than";
+            this.radOlderThan.UseVisualStyleBackColor = true;
+            this.radOlderThan.CheckedChanged += new System.EventHandler(this.radOlderThan_CheckedChanged);
+            // 
+            // cbxSearchStyle
+            // 
+            this.cbxSearchStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxSearchStyle.Enabled = false;
+            this.cbxSearchStyle.FormattingEnabled = true;
+            this.cbxSearchStyle.Items.AddRange(new object[] {
+            "Date Modified",
+            "Date Accessed",
+            "Date Created"});
+            this.cbxSearchStyle.Location = new System.Drawing.Point(190, 11);
+            this.cbxSearchStyle.Name = "cbxSearchStyle";
+            this.cbxSearchStyle.Size = new System.Drawing.Size(121, 21);
+            this.cbxSearchStyle.TabIndex = 7;
+            this.cbxSearchStyle.SelectedIndexChanged += new System.EventHandler(this.cbxSearchStyle_SelectedIndexChanged);
+            // 
+            // chkFilter
+            // 
+            this.chkFilter.AutoSize = true;
+            this.chkFilter.Location = new System.Drawing.Point(136, 13);
+            this.chkFilter.Name = "chkFilter";
+            this.chkFilter.Size = new System.Drawing.Size(48, 17);
+            this.chkFilter.TabIndex = 6;
+            this.chkFilter.Text = "Filter";
+            this.chkFilter.UseVisualStyleBackColor = true;
+            this.chkFilter.CheckedChanged += new System.EventHandler(this.chkFilter_CheckedChanged);
+            // 
+            // chkIncludeSubDirs
+            // 
+            this.chkIncludeSubDirs.AutoSize = true;
+            this.chkIncludeSubDirs.Checked = true;
+            this.chkIncludeSubDirs.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkIncludeSubDirs.Location = new System.Drawing.Point(831, 11);
+            this.chkIncludeSubDirs.Name = "chkIncludeSubDirs";
+            this.chkIncludeSubDirs.Size = new System.Drawing.Size(131, 17);
+            this.chkIncludeSubDirs.TabIndex = 5;
+            this.chkIncludeSubDirs.Text = "Include Subdirectories";
+            this.chkIncludeSubDirs.UseVisualStyleBackColor = true;
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefresh.Enabled = false;
+            this.btnRefresh.Location = new System.Drawing.Point(609, 3);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(75, 34);
+            this.btnRefresh.TabIndex = 4;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // btnScan
+            // 
+            this.btnScan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnScan.Location = new System.Drawing.Point(9, 3);
+            this.btnScan.Name = "btnScan";
+            this.btnScan.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnScan.Size = new System.Drawing.Size(108, 34);
+            this.btnScan.TabIndex = 1;
+            this.btnScan.Text = "Scan Directory...";
+            this.btnScan.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnScan.UseVisualStyleBackColor = true;
+            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.Location = new System.Drawing.Point(0, 405);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(977, 22);
+            this.statusStrip.TabIndex = 7;
+            this.statusStrip.Text = "statusStrip";
+            // 
             // ArchiverMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -295,6 +312,7 @@ namespace Archiver
             this.Name = "ArchiverMainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Archiver";
+            this.Shown += new System.EventHandler(this.ArchiverMainWindow_Shown);
             this.contextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.panelTop.ResumeLayout(false);
@@ -305,10 +323,7 @@ namespace Archiver
         }
         #endregion
         private System.Windows.Forms.Button btnScan;
-        private System.Windows.Forms.RadioButton radFilesOlderThan;
-        private System.Windows.Forms.RadioButton radFilesUntouchedSince;
         private System.Windows.Forms.DateTimePicker dateTimePicker;
-        private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Panel panelBottom;
         private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
@@ -326,6 +341,10 @@ namespace Archiver
         private DataGridViewTextBoxColumn colDateAccessed;
         private DataGridViewTextBoxColumn colDateCreated;
         private DataGridViewTextBoxColumn colPath;
+        private RadioButton radNewerThan;
+        private RadioButton radOlderThan;
+        private ComboBox cbxSearchStyle;
+        private CheckBox chkFilter;
     }
 }
 

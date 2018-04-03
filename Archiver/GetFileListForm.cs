@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -10,7 +11,11 @@ namespace Archiver {
 
         public List<FileData> fileList { get; }
         private readonly string path;
-        private readonly SearchConditions searchConditions;
+        private readonly SearchStyle searchStyle;
+        private readonly SearchPeriod searchPeriod;
+        private readonly DateTime searchDate;
+        private readonly SearchOption searchOption;
+        private readonly bool enableFilter;
         private int fileCount;
 
         private class ProgressData {
@@ -18,7 +23,7 @@ namespace Archiver {
             public string Filename;
         }
 
-        public GetFileListForm(string path, SearchConditions searchConditions) {
+        public GetFileListForm(string path, SearchFilter searchFilter) {
             InitializeComponent();
             if (string.IsNullOrEmpty(path)) {
                 Error.Show("Invalid path", "Cannot Load Files");
@@ -26,14 +31,18 @@ namespace Archiver {
                 return;
             }
             this.path = path;
-            this.searchConditions = searchConditions;
+            searchStyle = searchFilter.Style;
+            searchPeriod = searchFilter.Period;
+            searchDate = searchFilter.Date;
+            searchOption = searchFilter.Option;
+            enableFilter = searchFilter.Enabled;
             fileList = new List<FileData>();
         }
 
         private void GetFileListForm_Shown(object sender, EventArgs e) {
             Refresh();
             fileCount = (int)Invoke((Func<int>)(() =>
-                Directory.EnumerateFiles(path, "*", searchConditions.Option).Count()));
+                Directory.EnumerateFiles(path, "*", searchOption).Count()));
             btnCancel.Enabled = true;
             backgroundWorker.RunWorkerAsync();
         }
@@ -41,9 +50,9 @@ namespace Archiver {
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
             var dir = new DirectoryInfo(path);
             var i = 0;
-            foreach (var file in dir.EnumerateFiles("*", searchConditions.Option)) {
+            foreach (var file in dir.EnumerateFiles("*", searchOption)) {
                 if (e.Cancel) break;
-                if (!FileMeetsSearchConditions(file)) continue;
+                if (!CheckSearchFilter(file)) continue;
                 fileList.Add(new FileData(file));
                 i++;
                 var prog = i / (double) fileCount;
@@ -65,21 +74,27 @@ namespace Archiver {
             Close();
         }
 
-        private bool FileMeetsSearchConditions(FileSystemInfo file) {
+        private bool CheckSearchFilter(FileSystemInfo file) {
+            if (!enableFilter) return true;
             var condition = true;
-            var searchStyle = searchConditions.Style;
-            var searchDate = searchConditions.Date;
-            if (searchStyle == SearchStyle.ForFilesOlderThan)
-                condition = file.CreationTime.CompareTo(searchDate) < 0;
-            if (searchStyle == SearchStyle.ForFilesUntouchedSince)
+            var compare = 0;
+            if (searchStyle == SearchStyle.DateCreated) {
+                compare = file.CreationTime.CompareTo(searchDate);
+                if (searchPeriod == SearchPeriod.NewerThan)
+                    compare *= -1;
+                condition = compare < 0;
+            }
+            if (searchStyle == SearchStyle.DateAccessed) 
                 condition = file.LastAccessTime.CompareTo(searchDate) < 0;
+            if (searchStyle == SearchStyle.DateModified)
+                condition = file.LastWriteTime.CompareTo(searchDate) < 0;
             return condition;
         }
 
         private void updateProgress(int percentage, int counter, string filename) {
             progressBar.Value = percentage;
             lblProgressPercentage.Text = percentage + @"%";
-            lblFileIteration.Text = "Loading " + counter + "/" + fileCount + " files";
+            lblFileIteration.Text = @"Loading " + counter + @"/" + fileCount + @" files";
             status("Found: " + filename);
         }
 
