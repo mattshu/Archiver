@@ -43,6 +43,7 @@ namespace Archiver {
             int i = 0;
             foreach (var file in dir.EnumerateFiles("*", searchConditions.Option)) {
                 if (e.Cancel) break;
+                if (!FileMeetsSearchConditions(file)) continue;
                 fileList.Add(new FileData(file));
                 i++;
                 double prog = (double)i / (double)fileCount;
@@ -51,6 +52,17 @@ namespace Archiver {
                 // Send updates every 100 files (every 10 if < 100)
                 if (i < 100 && i % 10 == 0 || i % 100 == 0) backgroundWorker.ReportProgress(perc, progData);
             }
+        }
+
+        private bool FileMeetsSearchConditions(FileSystemInfo file) {
+            bool condition = true;
+            var searchStyle = searchConditions.Style;
+            var searchDate = searchConditions.Date;
+            if (searchStyle == SearchStyle.ForFilesOlderThan) 
+                condition = file.CreationTime.CompareTo(searchDate) < 0;
+            if (searchStyle == SearchStyle.ForFilesUntouchedSince)
+                condition = file.LastAccessTime.CompareTo(searchDate) < 0;
+            return condition;
         }
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) {

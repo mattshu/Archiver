@@ -66,6 +66,7 @@ namespace Archiver {
         }
         private static decimal GetSize(FileData data) {
             string[] splitText = data.Size.Split();
+            if (splitText.Length <= 1) return -1;
             decimal size = decimal.Parse(splitText[0]);
             string sizeSuffix = splitText[1];
             switch (sizeSuffix) {

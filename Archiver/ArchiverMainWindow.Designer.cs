@@ -40,6 +40,12 @@ namespace Archiver
             this.btnStop = new System.Windows.Forms.Button();
             this.panelBottom = new System.Windows.Forms.Panel();
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.panelTop = new System.Windows.Forms.Panel();
+            this.chkIncludeSubDirs = new System.Windows.Forms.CheckBox();
+            this.btnRefresh = new System.Windows.Forms.Button();
+            this.btnScan = new System.Windows.Forms.Button();
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.colFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colExtension = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,12 +53,6 @@ namespace Archiver
             this.colDateAccessed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDateCreated = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panelTop = new System.Windows.Forms.Panel();
-            this.chkIncludeSubDirs = new System.Windows.Forms.CheckBox();
-            this.btnRefresh = new System.Windows.Forms.Button();
-            this.btnScan = new System.Windows.Forms.Button();
-            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.contextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panelTop.SuspendLayout();
@@ -93,6 +93,7 @@ namespace Archiver
             this.radFilesOlderThan.TabStop = true;
             this.radFilesOlderThan.Text = "for Files older than:";
             this.radFilesOlderThan.UseVisualStyleBackColor = true;
+            this.radFilesOlderThan.CheckedChanged += new System.EventHandler(this.radFilesOlderThan_CheckedChanged);
             // 
             // radFilesUntouchedSince
             // 
@@ -108,10 +109,11 @@ namespace Archiver
             // dateTimePicker
             // 
             this.dateTimePicker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.dateTimePicker.Location = new System.Drawing.Point(291, 8);
+            this.dateTimePicker.Location = new System.Drawing.Point(291, 13);
             this.dateTimePicker.Name = "dateTimePicker";
             this.dateTimePicker.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker.TabIndex = 3;
+            this.dateTimePicker.ValueChanged += new System.EventHandler(this.dateTimePicker_ValueChanged);
             // 
             // btnStop
             // 
@@ -138,6 +140,7 @@ namespace Archiver
             // 
             this.dataGridView.AllowUserToAddRows = false;
             this.dataGridView.AllowUserToDeleteRows = false;
+            this.dataGridView.AllowUserToOrderColumns = true;
             this.dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -160,68 +163,6 @@ namespace Archiver
             this.dataGridView.Size = new System.Drawing.Size(970, 351);
             this.dataGridView.TabIndex = 1;
             this.dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_ColumnHeaderMouseClick);
-            // 
-            // colFile
-            // 
-            this.colFile.DataPropertyName = "Name";
-            this.colFile.Frozen = true;
-            this.colFile.HeaderText = "File";
-            this.colFile.Name = "colFile";
-            this.colFile.ReadOnly = true;
-            this.colFile.Width = 150;
-            // 
-            // colExtension
-            // 
-            this.colExtension.DataPropertyName = "Extension";
-            this.colExtension.Frozen = true;
-            this.colExtension.HeaderText = "Extension";
-            this.colExtension.Name = "colExtension";
-            this.colExtension.ReadOnly = true;
-            this.colExtension.Width = 75;
-            // 
-            // colSize
-            // 
-            this.colSize.DataPropertyName = "Size";
-            this.colSize.Frozen = true;
-            this.colSize.HeaderText = "Size";
-            this.colSize.Name = "colSize";
-            this.colSize.ReadOnly = true;
-            this.colSize.Width = 75;
-            // 
-            // colDateModified
-            // 
-            this.colDateModified.DataPropertyName = "DateModified";
-            this.colDateModified.Frozen = true;
-            this.colDateModified.HeaderText = "Date Modified";
-            this.colDateModified.Name = "colDateModified";
-            this.colDateModified.ReadOnly = true;
-            this.colDateModified.Width = 125;
-            // 
-            // colDateAccessed
-            // 
-            this.colDateAccessed.DataPropertyName = "DateAccessed";
-            this.colDateAccessed.Frozen = true;
-            this.colDateAccessed.HeaderText = "Date Accessed";
-            this.colDateAccessed.Name = "colDateAccessed";
-            this.colDateAccessed.ReadOnly = true;
-            this.colDateAccessed.Width = 125;
-            // 
-            // colDateCreated
-            // 
-            this.colDateCreated.DataPropertyName = "DateCreated";
-            this.colDateCreated.Frozen = true;
-            this.colDateCreated.HeaderText = "Date Created";
-            this.colDateCreated.Name = "colDateCreated";
-            this.colDateCreated.ReadOnly = true;
-            this.colDateCreated.Width = 125;
-            // 
-            // colPath
-            // 
-            this.colPath.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colPath.DataPropertyName = "Path";
-            this.colPath.HeaderText = "Path";
-            this.colPath.Name = "colPath";
-            this.colPath.ReadOnly = true;
             // 
             // panelTop
             // 
@@ -246,7 +187,7 @@ namespace Archiver
             this.chkIncludeSubDirs.AutoSize = true;
             this.chkIncludeSubDirs.Checked = true;
             this.chkIncludeSubDirs.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIncludeSubDirs.Location = new System.Drawing.Point(512, 13);
+            this.chkIncludeSubDirs.Location = new System.Drawing.Point(497, 18);
             this.chkIncludeSubDirs.Name = "chkIncludeSubDirs";
             this.chkIncludeSubDirs.Size = new System.Drawing.Size(131, 17);
             this.chkIncludeSubDirs.TabIndex = 5;
@@ -285,6 +226,62 @@ namespace Archiver
             this.statusStrip.Size = new System.Drawing.Size(977, 22);
             this.statusStrip.TabIndex = 7;
             this.statusStrip.Text = "statusStrip";
+            // 
+            // colFile
+            // 
+            this.colFile.DataPropertyName = "Name";
+            this.colFile.HeaderText = "File";
+            this.colFile.Name = "colFile";
+            this.colFile.ReadOnly = true;
+            this.colFile.Width = 150;
+            // 
+            // colExtension
+            // 
+            this.colExtension.DataPropertyName = "Extension";
+            this.colExtension.HeaderText = "Extension";
+            this.colExtension.Name = "colExtension";
+            this.colExtension.ReadOnly = true;
+            this.colExtension.Width = 75;
+            // 
+            // colSize
+            // 
+            this.colSize.DataPropertyName = "Size";
+            this.colSize.HeaderText = "Size";
+            this.colSize.Name = "colSize";
+            this.colSize.ReadOnly = true;
+            this.colSize.Width = 75;
+            // 
+            // colDateModified
+            // 
+            this.colDateModified.DataPropertyName = "DateModified";
+            this.colDateModified.HeaderText = "Date Modified";
+            this.colDateModified.Name = "colDateModified";
+            this.colDateModified.ReadOnly = true;
+            this.colDateModified.Width = 125;
+            // 
+            // colDateAccessed
+            // 
+            this.colDateAccessed.DataPropertyName = "DateAccessed";
+            this.colDateAccessed.HeaderText = "Date Accessed";
+            this.colDateAccessed.Name = "colDateAccessed";
+            this.colDateAccessed.ReadOnly = true;
+            this.colDateAccessed.Width = 125;
+            // 
+            // colDateCreated
+            // 
+            this.colDateCreated.DataPropertyName = "DateCreated";
+            this.colDateCreated.HeaderText = "Date Created";
+            this.colDateCreated.Name = "colDateCreated";
+            this.colDateCreated.ReadOnly = true;
+            this.colDateCreated.Width = 125;
+            // 
+            // colPath
+            // 
+            this.colPath.DataPropertyName = "Path";
+            this.colPath.HeaderText = "Path";
+            this.colPath.Name = "colPath";
+            this.colPath.ReadOnly = true;
+            this.colPath.Width = 252;
             // 
             // ArchiverMainWindow
             // 
