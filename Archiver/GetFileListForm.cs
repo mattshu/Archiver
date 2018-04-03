@@ -7,10 +7,11 @@ using System.Windows.Forms;
 
 namespace Archiver {
     public partial class GetFileListForm : Form {
-        private readonly string path;
-        private int fileCount;
-        private readonly SearchConditions searchConditions;
+
         public List<FileData> fileList { get; }
+        private readonly string path;
+        private readonly SearchConditions searchConditions;
+        private int fileCount;
 
         private class ProgressData {
             public int Counter;
@@ -29,8 +30,12 @@ namespace Archiver {
             fileList = new List<FileData>();
         }
 
-        private void status(string msg) {
-            lblStatus.Text = msg;
+        private void GetFileListForm_Shown(object sender, EventArgs e) {
+            Refresh();
+            fileCount = (int)Invoke((Func<int>)(() =>
+                Directory.EnumerateFiles(path, "*", searchConditions.Option).Count()));
+            btnCancel.Enabled = true;
+            backgroundWorker.RunWorkerAsync();
         }
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
@@ -45,8 +50,19 @@ namespace Archiver {
                 var perc = Convert.ToInt32(prog * 100);
                 var progData = new ProgressData {Counter = i, Filename = file.Name};
                 // Send updates every 100 files (every 10 if < 100)
-                if (i < 100 && i % 10 == 0 || i % 100 == 0) backgroundWorker.ReportProgress(perc, progData);
+                if (i < 100 && i % 10 == 0 || i % 100 == 0)
+                    backgroundWorker.ReportProgress(perc, progData);
             }
+        }
+
+        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) {
+            var progData = (ProgressData) e.UserState;
+            updateProgress(e.ProgressPercentage, progData.Counter, progData.Filename);
+        }
+
+        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
+            DialogResult = fileList.Count > 0 ? DialogResult.OK : DialogResult.None;
+            Close();
         }
 
         private bool FileMeetsSearchConditions(FileSystemInfo file) {
@@ -60,11 +76,6 @@ namespace Archiver {
             return condition;
         }
 
-        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) {
-            var progData = (ProgressData) e.UserState;
-            updateProgress(e.ProgressPercentage, progData.Counter, progData.Filename);
-        }
-
         private void updateProgress(int percentage, int counter, string filename) {
             progressBar.Value = percentage;
             lblProgressPercentage.Text = percentage + @"%";
@@ -72,17 +83,9 @@ namespace Archiver {
             status("Found: " + filename);
         }
 
-        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
-            DialogResult = fileList.Count > 0 ? DialogResult.OK : DialogResult.None;
-            Close();
+        private void status(string msg) {
+            lblStatus.Text = msg;
         }
 
-        private void GetFileListForm_Shown(object sender, EventArgs e) {
-            Refresh();
-            fileCount = (int) Invoke((Func<int>) (() =>
-                Directory.EnumerateFiles(path, "*", searchConditions.Option).Count()));
-            btnCancel.Enabled = true;
-            backgroundWorker.RunWorkerAsync();
-        }
     }
 }
