@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Archiver {
     public partial class GetFileListForm : Form {
-
-        private string path;
+        private readonly string path;
         private int fileCount;
-        private SearchConditions searchConditions;
+        private readonly SearchConditions searchConditions;
         public List<FileData> fileList { get; }
 
         private class ProgressData {
@@ -40,25 +35,25 @@ namespace Archiver {
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
             var dir = new DirectoryInfo(path);
-            int i = 0;
+            var i = 0;
             foreach (var file in dir.EnumerateFiles("*", searchConditions.Option)) {
                 if (e.Cancel) break;
                 if (!FileMeetsSearchConditions(file)) continue;
                 fileList.Add(new FileData(file));
                 i++;
-                double prog = (double)i / (double)fileCount;
-                int perc = Convert.ToInt32(prog * 100);
-                var progData = new ProgressData { Counter = i, Filename = file.Name };
+                var prog = i / (double) fileCount;
+                var perc = Convert.ToInt32(prog * 100);
+                var progData = new ProgressData {Counter = i, Filename = file.Name};
                 // Send updates every 100 files (every 10 if < 100)
                 if (i < 100 && i % 10 == 0 || i % 100 == 0) backgroundWorker.ReportProgress(perc, progData);
             }
         }
 
         private bool FileMeetsSearchConditions(FileSystemInfo file) {
-            bool condition = true;
+            var condition = true;
             var searchStyle = searchConditions.Style;
             var searchDate = searchConditions.Date;
-            if (searchStyle == SearchStyle.ForFilesOlderThan) 
+            if (searchStyle == SearchStyle.ForFilesOlderThan)
                 condition = file.CreationTime.CompareTo(searchDate) < 0;
             if (searchStyle == SearchStyle.ForFilesUntouchedSince)
                 condition = file.LastAccessTime.CompareTo(searchDate) < 0;
@@ -66,7 +61,7 @@ namespace Archiver {
         }
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) {
-            var progData = (ProgressData)e.UserState;
+            var progData = (ProgressData) e.UserState;
             updateProgress(e.ProgressPercentage, progData.Counter, progData.Filename);
         }
 
@@ -84,7 +79,8 @@ namespace Archiver {
 
         private void GetFileListForm_Shown(object sender, EventArgs e) {
             Refresh();
-            fileCount = (int)Invoke((Func<int>)(() => Directory.EnumerateFiles(path, "*", searchConditions.Option).Count()));
+            fileCount = (int) Invoke((Func<int>) (() =>
+                Directory.EnumerateFiles(path, "*", searchConditions.Option).Count()));
             btnCancel.Enabled = true;
             backgroundWorker.RunWorkerAsync();
         }
