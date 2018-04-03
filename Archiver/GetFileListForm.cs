@@ -43,6 +43,10 @@ namespace Archiver {
             Refresh();
             fileCount = (int)Invoke((Func<int>)(() =>
                 Directory.EnumerateFiles(path, "*", searchOption).Count()));
+            if (fileCount <= 0) {
+                Close(); // TODO next
+                return;
+            }
             btnCancel.Enabled = true;
             backgroundWorker.RunWorkerAsync();
         }
@@ -76,19 +80,18 @@ namespace Archiver {
 
         private bool CheckSearchFilter(FileSystemInfo file) {
             if (!enableFilter) return true;
-            var condition = true;
             var compare = 0;
-            if (searchStyle == SearchStyle.DateCreated) {
-                compare = file.CreationTime.CompareTo(searchDate);
-                if (searchPeriod == SearchPeriod.NewerThan)
-                    compare *= -1;
-                condition = compare < 0;
-            }
-            if (searchStyle == SearchStyle.DateAccessed) 
-                condition = file.LastAccessTime.CompareTo(searchDate) < 0;
             if (searchStyle == SearchStyle.DateModified)
-                condition = file.LastWriteTime.CompareTo(searchDate) < 0;
-            return condition;
+                compare = file.LastWriteTime.CompareTo(searchDate);
+            else if (searchStyle == SearchStyle.DateAccessed) 
+                compare = file.LastAccessTime.CompareTo(searchDate);
+            else if (searchStyle == SearchStyle.DateCreated) 
+                compare = file.CreationTime.CompareTo(searchDate);
+            if (searchPeriod == SearchPeriod.OlderThan && compare > 0 ||
+                    searchPeriod == SearchPeriod.NewerThan && compare < 0) return false;
+            if (searchPeriod == SearchPeriod.NewerThan)
+                compare *= -1;
+            return compare < 0;
         }
 
         private void updateProgress(int percentage, int counter, string filename) {

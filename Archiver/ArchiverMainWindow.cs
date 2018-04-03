@@ -20,6 +20,7 @@ namespace Archiver {
         }
 
         private void btnRefresh_Click(object sender, EventArgs e) {
+            fileList = new List<FileData>();
             RefreshDataGridView();
         }
 
@@ -31,7 +32,7 @@ namespace Archiver {
         }
 
         private void dateTimePicker_ValueChanged(object sender, EventArgs e) {
-            btnRefresh.Enabled = DataListHasItems();
+            btnRefresh.Enabled = true;
         }
 
         private void radOlderThan_CheckedChanged(object sender, EventArgs e) {
@@ -74,7 +75,7 @@ namespace Archiver {
 
         private void RefreshDataGridView() {
             SetSearchFilter();
-            BuildFileList();
+            BuildFileListFromParentFolder();
             LoadItemsFromFileList();
         }
 
@@ -156,18 +157,18 @@ namespace Archiver {
             if (tryParentFolder == null) return;
             parentFolder = tryParentFolder;
             SetSearchFilter();
-            BuildFileList();
+            BuildFileListFromParentFolder();
         }
 
-        private void BuildFileList() {
+        private void BuildFileListFromParentFolder() {
             var getFileListForm = new GetFileListForm(parentFolder, searchFilter);
             if (getFileListForm.ShowDialog() != DialogResult.OK || getFileListForm.fileList.Count <= 0) return;
             fileList = getFileListForm.fileList;
         }
 
         private void LoadItemsFromFileList() {
-            if (fileList.Count <= 0) return;
             dataGridView.DataSource = null;
+            //if (fileList.Count <= 0) ;
             BuildDataGridViewColumns();
             dataGridView.DataSource = fileList;
             btnRefresh.Enabled = true; // TODO TEMP
