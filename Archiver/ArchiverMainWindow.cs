@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace Archiver {
     public partial class ArchiverMainWindow : Form {
 
-        public SearchFilter searchFilter;
+        private SearchFilter searchFilter;
 
         private List<FileData> fileList = new List<FileData>();
         private string parentFolder;
@@ -127,7 +127,14 @@ namespace Archiver {
 
         private string SetParentFolder() {
             folderBrowserDialog = new FolderBrowserDialog();
-            return folderBrowserDialog.ShowDialog() != DialogResult.OK ? null : folderBrowserDialog.SelectedPath;
+            if (folderBrowserDialog.ShowDialog() != DialogResult.OK) return null;
+            var path = folderBrowserDialog.SelectedPath;
+            SetWindowTitle(path);
+            return path;
+        }
+
+        private void SetWindowTitle(string title) {
+            Text = title + @" - Archiver";
         }
 
         private void SetSearchFilter() {
@@ -168,10 +175,19 @@ namespace Archiver {
 
         private void LoadItemsFromFileList() {
             dataGridView.DataSource = null;
-            //if (fileList.Count <= 0) ;
             BuildDataGridViewColumns();
+            if (fileList.Count <= 0) {
+                dataGridView.Rows.Add("No matching files.", "", "", "", "", "", "");
+                Beep();
+                return;
+            }
             dataGridView.DataSource = fileList;
             btnRefresh.Enabled = true; // TODO TEMP
+            tslblFileCount.Text = @"File count: " + fileList.Count; // TODO TEMP
+        }
+
+        private static void Beep() {
+            System.Media.SystemSounds.Asterisk.Play();
         }
 
         public ArchiverMainWindow() {

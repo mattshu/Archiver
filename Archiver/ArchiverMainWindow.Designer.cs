@@ -54,9 +54,12 @@ namespace Archiver
             this.btnScan = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.tslblFileCount = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsseparator1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.contextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panelTop.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenu
@@ -83,11 +86,12 @@ namespace Archiver
             // 
             // dateTimePicker
             // 
-            this.dateTimePicker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.dateTimePicker.CustomFormat = "MM/dd/yyyy h:mm tt";
             this.dateTimePicker.Enabled = false;
+            this.dateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker.Location = new System.Drawing.Point(403, 10);
             this.dateTimePicker.Name = "dateTimePicker";
-            this.dateTimePicker.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker.Size = new System.Drawing.Size(146, 20);
             this.dateTimePicker.TabIndex = 3;
             this.dateTimePicker.ValueChanged += new System.EventHandler(this.dateTimePicker_ValueChanged);
             // 
@@ -98,7 +102,7 @@ namespace Archiver
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelBottom.Location = new System.Drawing.Point(0, 43);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(970, 354);
+            this.panelBottom.Size = new System.Drawing.Size(959, 354);
             this.panelBottom.TabIndex = 5;
             // 
             // dataGridView
@@ -257,6 +261,7 @@ namespace Archiver
             // 
             // chkIncludeSubDirs
             // 
+            this.chkIncludeSubDirs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkIncludeSubDirs.AutoSize = true;
             this.chkIncludeSubDirs.Checked = true;
             this.chkIncludeSubDirs.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -269,9 +274,8 @@ namespace Archiver
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRefresh.Enabled = false;
-            this.btnRefresh.Location = new System.Drawing.Point(609, 3);
+            this.btnRefresh.Location = new System.Drawing.Point(555, 3);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(75, 34);
             this.btnRefresh.TabIndex = 4;
@@ -294,11 +298,26 @@ namespace Archiver
             // 
             // statusStrip
             // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tslblFileCount,
+            this.tsseparator1});
             this.statusStrip.Location = new System.Drawing.Point(0, 405);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(977, 22);
             this.statusStrip.TabIndex = 7;
             this.statusStrip.Text = "statusStrip";
+            // 
+            // tslblFileCount
+            // 
+            this.tslblFileCount.Name = "tslblFileCount";
+            this.tslblFileCount.Size = new System.Drawing.Size(0, 17);
+            // 
+            // tsseparator1
+            // 
+            this.tsseparator1.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsseparator1.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
+            this.tsseparator1.Name = "tsseparator1";
+            this.tsseparator1.Size = new System.Drawing.Size(4, 17);
             // 
             // ArchiverMainWindow
             // 
@@ -317,6 +336,8 @@ namespace Archiver
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -345,6 +366,8 @@ namespace Archiver
         private RadioButton radOlderThan;
         private ComboBox cbxSearchStyle;
         private CheckBox chkFilter;
+        private ToolStripStatusLabel tslblFileCount;
+        private ToolStripStatusLabel tsseparator1;
     }
 }
 

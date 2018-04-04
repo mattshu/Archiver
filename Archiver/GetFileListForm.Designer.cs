@@ -70,10 +70,11 @@
             // 
             this.lblStatus.AutoSize = true;
             this.lblStatus.Location = new System.Drawing.Point(12, 78);
+            this.lblStatus.MinimumSize = new System.Drawing.Size(400, 0);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(184, 13);
+            this.lblStatus.Size = new System.Drawing.Size(400, 13);
             this.lblStatus.TabIndex = 7;
-            this.lblStatus.Text = "Loading files from selected directory...";
+            this.lblStatus.Text = "Loading files. This may take awhile...";
             // 
             // lblFileIteration
             // 
