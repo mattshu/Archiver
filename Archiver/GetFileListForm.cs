@@ -88,18 +88,17 @@ namespace Archiver {
 
         private bool TryGettingFile(FileInfo fi, ref int progress) {
             if (!CheckSearchFilter(fi)) return false;
-            progress++;
             fileList.Add(new FileData(fi));
-            ReportProgress(fi, progress);
+            ReportProgress(fi, progress++);
             return true;
         }
 
-        private void ReportProgress(FileInfo fi, int iteration) {
+        private void ReportProgress(FileInfo fi, int progress) {
             // Send updates every 100 files (every 10 if < 100)
-            if (iteration < 100 && iteration % 10 == 0 || iteration % 100 == 0) {
-                var prog = iteration / (double) fileCount;
+            if (progress < 100 && progress % 10 == 0 || progress % 100 == 0) {
+                var prog = progress / (double) fileCount;
                 var perc = Convert.ToInt32(prog * 100);
-                var progData = new ProgressData {Counter = iteration, Filename = fi.Name};
+                var progData = new ProgressData {Counter = progress, Filename = fi.Name};
                 backgroundWorker.ReportProgress(perc, progData);
             }
         }
