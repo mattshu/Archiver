@@ -57,7 +57,7 @@ namespace Archiver {
                 foreach (var fi in diTop.EnumerateFiles()) {
                     try {
                         if (e.Cancel) break;
-                        if (TryGettingFile(fi, ref progress)) continue;
+                        if (TryGettingFile(fi, progress++)) continue;
                     }
                     catch (UnauthorizedAccessException) {
                         // Ignore unaccessible files
@@ -69,7 +69,7 @@ namespace Archiver {
                         foreach (var fi in di.EnumerateFiles("*", SearchOption.AllDirectories)) {
                             try {
                                 if (e.Cancel) break;
-                                if (TryGettingFile(fi, ref progress)) continue;
+                                if (TryGettingFile(fi, progress++)) continue;
                             }
                             catch (UnauthorizedAccessException) {
                                 // Ignore unaccessible files
@@ -86,10 +86,10 @@ namespace Archiver {
             }
         }
 
-        private bool TryGettingFile(FileInfo fi, ref int progress) {
+        private bool TryGettingFile(FileInfo fi, int progress) {
             if (!CheckSearchFilter(fi)) return false;
             fileList.Add(new FileData(fi));
-            ReportProgress(fi, progress++);
+            ReportProgress(fi, progress);
             return true;
         }
 
