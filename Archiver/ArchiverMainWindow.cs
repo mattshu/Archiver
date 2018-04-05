@@ -13,7 +13,15 @@ namespace Archiver {
         private List<FileData> fileList = new List<FileData>();
         private string parentFolder;
         private SortOrder sortOrder = SortOrder.Ascending;
-        
+
+        private void ArchiverMainWindow_Shown(object sender, EventArgs e) {
+            cbxSearchStyle.SelectedIndex = 0;
+        }
+
+        private void ArchiverMainWindow_FormClosing(object sender, FormClosingEventArgs e) {
+            SaveColumnWidths();
+        }
+
         private void btnScan_Click(object sender, EventArgs e) {
             BuildNewFileList();
             LoadItemsFromFileList();
@@ -37,6 +45,8 @@ namespace Archiver {
 
         private void radOlderThan_CheckedChanged(object sender, EventArgs e) {
             searchFilter.Period = GetSearchPeriod();
+            Debug.WriteLine(dataGridView.Columns[0].Width);
+            Debug.WriteLine(Properties.Settings.Default.colFileWidth);
         }
 
         private void chkFilter_CheckedChanged(object sender, EventArgs e) {
@@ -51,7 +61,6 @@ namespace Archiver {
         }
 
         private void cbxSearchStyle_SelectedIndexChanged(object sender, EventArgs e) {
-            Debug.WriteLine(sender.GetType());
             searchFilter.Style = GetSearchStyle();
             btnRefresh.Enabled = DataListHasItems();
         }
@@ -85,37 +94,37 @@ namespace Archiver {
             colFile = new DataGridViewTextBoxColumn {
                 DataPropertyName = "Name",
                 Name = "File",
-                Width = 150
+                Width = Properties.Settings.Default.colFileWidth
             };
             colExtension = new DataGridViewTextBoxColumn {
                 DataPropertyName = "Extension",
                 Name = "Extension",
-                Width = 75
+                Width = Properties.Settings.Default.colExtWidth
             };
             colSize = new DataGridViewTextBoxColumn {
                 DataPropertyName = "Size",
                 Name = "Size",
-                Width = 75
+                Width = Properties.Settings.Default.colSizeWidth
             };
             colDateModified = new DataGridViewTextBoxColumn {
                 DataPropertyName = "DateModified",
                 Name = "Date Modified",
-                Width = 125
+                Width = Properties.Settings.Default.colDateModWidth
             };
             colDateAccessed = new DataGridViewTextBoxColumn {
                 DataPropertyName = "DateAccessed",
                 Name = "Date Accessed",
-                Width = 125
+                Width = Properties.Settings.Default.colDateAccWidth
             };
             colDateCreated = new DataGridViewTextBoxColumn {
                 DataPropertyName = "DateCreated",
                 Name = "Date Created",
-                Width = 125
+                Width = Properties.Settings.Default.colDateCreateWidth
             };
             colPath = new DataGridViewTextBoxColumn {
                 DataPropertyName = "Path",
                 Name = "Path",
-                Width = 252
+                Width = Properties.Settings.Default.colPathWidth
             };
             dataGridView.Columns.AddRange(colFile, colExtension, colSize, colDateModified, colDateAccessed,
                 colDateCreated, colPath);
@@ -135,6 +144,17 @@ namespace Archiver {
 
         private void SetWindowTitle(string title) {
             Text = title + @" - Archiver";
+        }
+
+        private void SaveColumnWidths() {
+            Properties.Settings.Default.colFileWidth = dataGridView.Columns[0].Width;
+            Properties.Settings.Default.colExtWidth = dataGridView.Columns[1].Width;
+            Properties.Settings.Default.colSizeWidth = dataGridView.Columns[2].Width;
+            Properties.Settings.Default.colDateModWidth = dataGridView.Columns[3].Width;
+            Properties.Settings.Default.colDateAccWidth = dataGridView.Columns[4].Width;
+            Properties.Settings.Default.colDateCreateWidth = dataGridView.Columns[5].Width;
+            Properties.Settings.Default.colPathWidth = dataGridView.Columns[6].Width;
+            Properties.Settings.Default.Save();
         }
 
         private void SetSearchFilter() {
@@ -195,8 +215,6 @@ namespace Archiver {
             searchFilter = new SearchFilter();
         }
 
-        private void ArchiverMainWindow_Shown(object sender, EventArgs e) {
-            cbxSearchStyle.SelectedIndex = 0;
-        }
+ 
     }
 }

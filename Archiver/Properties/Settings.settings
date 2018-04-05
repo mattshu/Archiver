@@ -23,11 +23,5 @@
     <Setting Name="colPathWidth" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">292</Value>
     </Setting>
-    <Setting Name="AutosizePathColumn" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="ShowGrid" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

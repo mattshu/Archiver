@@ -292,7 +292,6 @@ namespace Archiver
             this.btnScan.Size = new System.Drawing.Size(108, 34);
             this.btnScan.TabIndex = 1;
             this.btnScan.Text = "Scan Directory...";
-            this.btnScan.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnScan.UseVisualStyleBackColor = true;
             this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
             // 
@@ -331,6 +330,7 @@ namespace Archiver
             this.Name = "ArchiverMainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Archiver";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ArchiverMainWindow_FormClosing);
             this.Shown += new System.EventHandler(this.ArchiverMainWindow_Shown);
             this.contextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
