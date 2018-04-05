@@ -16,6 +16,7 @@ namespace Archiver {
 
         private void ArchiverMainWindow_Shown(object sender, EventArgs e) {
             cbxSearchStyle.SelectedIndex = 0;
+            LoadColumnWidths();
         }
 
         private void ArchiverMainWindow_FormClosing(object sender, FormClosingEventArgs e) {
@@ -91,43 +92,16 @@ namespace Archiver {
         private void BuildDataGridViewColumns() {
             dataGridView.Columns.Clear();
             dataGridView.AutoGenerateColumns = false;
-            colFile = new DataGridViewTextBoxColumn {
-                DataPropertyName = "Name",
-                Name = "File",
-                Width = Properties.Settings.Default.colFileWidth
-            };
-            colExtension = new DataGridViewTextBoxColumn {
-                DataPropertyName = "Extension",
-                Name = "Extension",
-                Width = Properties.Settings.Default.colExtWidth
-            };
-            colSize = new DataGridViewTextBoxColumn {
-                DataPropertyName = "Size",
-                Name = "Size",
-                Width = Properties.Settings.Default.colSizeWidth
-            };
-            colDateModified = new DataGridViewTextBoxColumn {
-                DataPropertyName = "DateModified",
-                Name = "Date Modified",
-                Width = Properties.Settings.Default.colDateModWidth
-            };
-            colDateAccessed = new DataGridViewTextBoxColumn {
-                DataPropertyName = "DateAccessed",
-                Name = "Date Accessed",
-                Width = Properties.Settings.Default.colDateAccWidth
-            };
-            colDateCreated = new DataGridViewTextBoxColumn {
-                DataPropertyName = "DateCreated",
-                Name = "Date Created",
-                Width = Properties.Settings.Default.colDateCreateWidth
-            };
-            colPath = new DataGridViewTextBoxColumn {
-                DataPropertyName = "Path",
-                Name = "Path",
-                Width = Properties.Settings.Default.colPathWidth
-            };
+            colFile = new DataGridViewTextBoxColumn { DataPropertyName = "Name", Name = "File" };
+            colExtension = new DataGridViewTextBoxColumn { DataPropertyName = "Extension", Name = "Extension" };
+            colSize = new DataGridViewTextBoxColumn {DataPropertyName = "Size", Name = "Size"};
+            colDateModified = new DataGridViewTextBoxColumn { DataPropertyName = "DateModified", Name = "Date Modified" };
+            colDateAccessed = new DataGridViewTextBoxColumn { DataPropertyName = "DateAccessed", Name = "Date Accessed" };
+            colDateCreated = new DataGridViewTextBoxColumn { DataPropertyName = "DateCreated", Name = "Date Created" };
+            colPath = new DataGridViewTextBoxColumn { DataPropertyName = "Path", Name = "Path" };
             dataGridView.Columns.AddRange(colFile, colExtension, colSize, colDateModified, colDateAccessed,
                 colDateCreated, colPath);
+            LoadColumnWidths();
         }
 
         private bool DataListHasItems() {
@@ -155,6 +129,16 @@ namespace Archiver {
             Properties.Settings.Default.colDateCreateWidth = dataGridView.Columns[5].Width;
             Properties.Settings.Default.colPathWidth = dataGridView.Columns[6].Width;
             Properties.Settings.Default.Save();
+        }
+
+        private void LoadColumnWidths() {
+            dataGridView.Columns[0].Width = Properties.Settings.Default.colFileWidth;
+            dataGridView.Columns[1].Width = Properties.Settings.Default.colExtWidth;
+            dataGridView.Columns[2].Width = Properties.Settings.Default.colSizeWidth;
+            dataGridView.Columns[3].Width = Properties.Settings.Default.colDateModWidth;
+            dataGridView.Columns[4].Width = Properties.Settings.Default.colDateAccWidth;
+            dataGridView.Columns[5].Width = Properties.Settings.Default.colDateCreateWidth;
+            dataGridView.Columns[6].Width = Properties.Settings.Default.colPathWidth;
         }
 
         private void SetSearchFilter() {
