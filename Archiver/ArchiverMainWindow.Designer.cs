@@ -63,6 +63,7 @@ namespace Archiver
             this.btnQuarantine = new System.Windows.Forms.Button();
             this.btnQuarantineSelected = new System.Windows.Forms.Button();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.contextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panelTop.SuspendLayout();
@@ -364,7 +365,8 @@ namespace Archiver
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tslblFileCount,
             this.tsseparator1,
-            this.toolStripStatusLabel1});
+            this.toolStripStatusLabel1,
+            this.toolStripStatusLabel2});
             this.statusStrip.Location = new System.Drawing.Point(0, 553);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(1047, 22);
@@ -414,6 +416,12 @@ namespace Archiver
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel2.Text = "toolStripStatusLabel2";
             // 
             // ArchiverMainWindow
             // 
@@ -473,6 +481,7 @@ namespace Archiver
         private Button btnQuarantineSelected;
         private Button btnQuarantine;
         private ToolStripStatusLabel toolStripStatusLabel1;
+        private ToolStripStatusLabel toolStripStatusLabel2;
     }
 }
 

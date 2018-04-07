@@ -39,7 +39,14 @@ namespace Archiver {
                 try {
                     File.Delete(file.Path);
                 }
+                catch (Exception) {
+                    // Ignore exceptions
+                }
             }
+            if (fileList.Count > 0) {
+                
+            }
+            LoadItemsFromFileList();
         }
 
         private void btnRemoveSelected_Click(object sender, EventArgs e) {
@@ -118,6 +125,10 @@ namespace Archiver {
         private void RefreshDataGridView() {
             SetSearchFilter();
             BuildFileListFromParentFolder();
+            if (fileList.Count <= 0) {
+                StatusUpdate("No matching files found.");
+                Beep();
+            }
             LoadItemsFromFileList();
         }
 
@@ -195,6 +206,10 @@ namespace Archiver {
             return chkIncludeSubDirs.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
         }
 
+        private void StatusUpdate(string msg) {
+            statusStrip.Items["ssStatus"].Text = msg;
+        }
+
         private void BuildNewFileList() {
             var tryParentFolder = SetParentFolder();
             if (tryParentFolder == null) return;
@@ -204,19 +219,15 @@ namespace Archiver {
         }
 
         private void BuildFileListFromParentFolder() {
-            var getFileListForm = new GetFileListForm(parentFolder, searchFilter);
-            if (getFileListForm.ShowDialog() != DialogResult.OK || getFileListForm.fileList.Count <= 0) return;
+            var getFileListForm = new ProgressDialog(parentFolder, searchFilter);
             fileList = getFileListForm.fileList;
         }
 
         private void LoadItemsFromFileList() {
             dataGridView.DataSource = null;
             BuildDataGridViewColumns();
-            if (fileList.Count <= 0) {
-                dataGridView.Rows.Add("No matching files.", "", "", "", "", "", "");
-                Beep();
+            if (fileList.Count <= 0)
                 return;
-            }
             dataGridView.DataSource = fileList;
             btnRefresh.Enabled = true;
             string fileCountText = "File count: " + fileList.Count;
