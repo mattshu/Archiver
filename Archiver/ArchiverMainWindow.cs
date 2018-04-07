@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -33,6 +32,41 @@ namespace Archiver {
             RefreshDataGridView();
         }
 
+        private void btnRemoveAllFiles_Click(object sender, EventArgs e) {
+            const string removeConfirmText = "Are you sure you wish to remove all files? This cannot be undone.";
+            if (!ConfirmDialog(removeConfirmText)) return;
+            foreach (var file in fileList) {
+                try {
+                    File.Delete(file.Path);
+                }
+            }
+        }
+
+        private void btnRemoveSelected_Click(object sender, EventArgs e) {
+
+        }
+
+        private void btnQuarantine_Click(object sender, EventArgs e) {
+
+        }
+
+        private void btnQuarantineSelected_Click(object sender, EventArgs e) {
+            
+        }
+
+        private bool ConfirmDialog(string msg, string title = "Confirm") {
+            return MessageBox.Show(msg, title, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation) ==
+                   DialogResult.Yes;
+        }
+
+        private void btnExportAsList_Click(object sender, EventArgs e) {
+
+        }
+
+        private void btnClose_Click(object sender, EventArgs e) {
+            Close();
+        }
+        
         private void dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e) {
             sortOrder = sortOrder == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
             var fileDataComparer = new FileDataComparer((ColumnType)e.ColumnIndex, sortOrder);
@@ -46,8 +80,6 @@ namespace Archiver {
 
         private void radOlderThan_CheckedChanged(object sender, EventArgs e) {
             searchFilter.Period = GetSearchPeriod();
-            Debug.WriteLine(dataGridView.Columns[0].Width);
-            Debug.WriteLine(Properties.Settings.Default.colFileWidth);
         }
 
         private void chkFilter_CheckedChanged(object sender, EventArgs e) {
@@ -71,11 +103,11 @@ namespace Archiver {
             var name = (string) dataGridView.SelectedRows[0].Cells["File"].Value;
             var path = (string) dataGridView.SelectedRows[0].Cells["Path"].Value;
             if (e.ClickedItem == ctxOpenFileLocation) {
-                Process.Start("explorer.exe", path);
+                System.Diagnostics.Process.Start("explorer.exe", path);
             }
             else if (e.ClickedItem == ctxOpenFile) {
                 var pathToFile = path + "\\" + name;
-                Process.Start("explorer.exe", pathToFile);
+                System.Diagnostics.Process.Start("explorer.exe", pathToFile);
             }
         }
 
@@ -186,8 +218,9 @@ namespace Archiver {
                 return;
             }
             dataGridView.DataSource = fileList;
-            btnRefresh.Enabled = true; // TODO TEMP
-            tslblFileCount.Text = @"File count: " + fileList.Count; // TODO TEMP
+            btnRefresh.Enabled = true;
+            string fileCountText = "File count: " + fileList.Count;
+            tslblFileCount.Text = fileCountText;
         }
 
         private static void Beep() {
@@ -199,6 +232,5 @@ namespace Archiver {
             searchFilter = new SearchFilter();
         }
 
- 
     }
 }
