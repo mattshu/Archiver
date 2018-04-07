@@ -1,5 +1,5 @@
 ﻿namespace Archiver {
-    partial class ProgressDialog {
+    partial class GetFileListForm {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -25,9 +25,10 @@
         private void InitializeComponent() {
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.lblProgressPercentage = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
-            this.lblIteration = new System.Windows.Forms.Label();
+            this.lblFileIteration = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // progressBar
@@ -48,6 +49,14 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
+            // backgroundWorker
+            // 
+            this.backgroundWorker.WorkerReportsProgress = true;
+            this.backgroundWorker.WorkerSupportsCancellation = true;
+            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
+            this.backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
+            this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
+            // 
             // lblProgressPercentage
             // 
             this.lblProgressPercentage.AutoSize = true;
@@ -65,32 +74,34 @@
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(400, 13);
             this.lblStatus.TabIndex = 7;
-            this.lblStatus.Text = "Loading...";
+            this.lblStatus.Text = "Loading files. This may take awhile...";
             // 
-            // lblIteration
+            // lblFileIteration
             // 
-            this.lblIteration.AutoSize = true;
-            this.lblIteration.Location = new System.Drawing.Point(12, 18);
-            this.lblIteration.Name = "lblIteration";
-            this.lblIteration.Size = new System.Drawing.Size(0, 13);
-            this.lblIteration.TabIndex = 5;
+            this.lblFileIteration.AutoSize = true;
+            this.lblFileIteration.Location = new System.Drawing.Point(12, 18);
+            this.lblFileIteration.Name = "lblFileIteration";
+            this.lblFileIteration.Size = new System.Drawing.Size(45, 13);
+            this.lblFileIteration.TabIndex = 5;
+            this.lblFileIteration.Text = "0/0 files";
             // 
-            // ProgressDialog
+            // GetFileListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(506, 111);
             this.Controls.Add(this.lblStatus);
-            this.Controls.Add(this.lblIteration);
+            this.Controls.Add(this.lblFileIteration);
             this.Controls.Add(this.lblProgressPercentage);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.progressBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ProgressDialog";
+            this.Name = "GetFileListForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Loading...";
+            this.Text = "Loading Files...";
+            this.Shown += new System.EventHandler(this.GetFileListForm_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -100,9 +111,10 @@
 
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Button btnCancel;
+        private System.ComponentModel.BackgroundWorker backgroundWorker;
         private System.Windows.Forms.Label lblProgressPercentage;
         private System.Windows.Forms.Label lblStatus;
-        private System.Windows.Forms.Label lblIteration;
+        private System.Windows.Forms.Label lblFileIteration;
     }
 }
 

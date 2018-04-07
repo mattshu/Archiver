@@ -1,42 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Archiver {
-    class FileList {
+    public partial class GetFileListForm : Form {
 
         public List<FileData> fileList { get; }
         private readonly string path;
-        private readonly SearchFilter searchFilter;
+        private readonly SearchStyle searchStyle;
+        private readonly SearchPeriod searchPeriod;
+        private readonly DateTime searchDate;
+        private readonly SearchOption searchOption;
+        private readonly bool enableFilter;
         private int fileCount;
-        private readonly BackgroundWorker backgroundWorker;
 
         private class ProgressData {
             public int Counter;
             public string Filename;
         }
 
-        public FileList(string path, SearchFilter searchFilter) {
-            this.path = path;
-            this.searchFilter = searchFilter;
-            fileList = new List<FileData>();
-            backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += backgroundWorker_DoWork;
-            backgroundWorker.ProgressChanged += backgroundWorker_ProgressChanged;
-            backgroundWorker.RunWorkerCompleted += backgroundWorker_RunWorkerCompleted;
-        }
-
-        public void GetFileList() { 
-            fileCount = GetFileCount();
-            if (fileCount <= 0) {
-                // TODO No files found
+        public GetFileListForm(string path, SearchFilter searchFilter) {
+            InitializeComponent();
+            if (string.IsNullOrEmpty(path)) {
+                Error.Show("Invalid path", "Cannot Load Files");
+                Load += (s, e) => Close();
                 return;
             }
+            this.path = path;
+            searchStyle = searchFilter.Style;
+            searchPeriod = searchFilter.Period;
+            searchDate = searchFilter.Date;
+            searchOption = searchFilter.Option;
+            enableFilter = searchFilter.Enabled;
+            fileList = new List<FileData>();
+        }
+
+        private void GetFileListForm_Shown(object sender, EventArgs e) {
+            Refresh();
+            fileCount = GetFileCount();
+            if (fileCount <= 0) {
+                Close();
+                return;
+            }
+            btnCancel.Enabled = true;
             backgroundWorker.RunWorkerAsync();
         }
 
@@ -86,15 +96,15 @@ namespace Archiver {
         private void ReportProgress(FileInfo fi, int progress) {
             // Send updates every 100 files (every 10 if < 100)
             if (progress < 100 && progress % 10 == 0 || progress % 100 == 0) {
-                var prog = progress / (double)fileCount;
+                var prog = progress / (double) fileCount;
                 var perc = Convert.ToInt32(prog * 100);
-                var progData = new ProgressData { Counter = progress, Filename = fi.Name };
+                var progData = new ProgressData {Counter = progress, Filename = fi.Name};
                 backgroundWorker.ReportProgress(perc, progData);
             }
         }
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) {
-            var progData = (ProgressData)e.UserState;
+            var progData = (ProgressData) e.UserState;
             updateProgress(e.ProgressPercentage, progData.Counter, progData.Filename);
         }
 
@@ -108,9 +118,9 @@ namespace Archiver {
             var compare = 0;
             if (searchStyle == SearchStyle.DateModified)
                 compare = file.LastWriteTime.CompareTo(searchDate);
-            else if (searchStyle == SearchStyle.DateAccessed)
+            else if (searchStyle == SearchStyle.DateAccessed) 
                 compare = file.LastAccessTime.CompareTo(searchDate);
-            else if (searchStyle == SearchStyle.DateCreated)
+            else if (searchStyle == SearchStyle.DateCreated) 
                 compare = file.CreationTime.CompareTo(searchDate);
             if (searchPeriod == SearchPeriod.OlderThan && compare > 0 ||
                     searchPeriod == SearchPeriod.NewerThan && compare < 0) return false;
@@ -162,5 +172,6 @@ namespace Archiver {
         private void status(string msg) {
             lblStatus.Text = msg;
         }
+
     }
 }
