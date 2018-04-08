@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Archiver {
@@ -35,11 +36,17 @@ namespace Archiver {
         private void btnRemoveAllFiles_Click(object sender, EventArgs e) {
             const string removeConfirmText = "Are you sure you wish to remove all files? This cannot be undone.";
             if (!ConfirmDialog(removeConfirmText)) return;
-            foreach (var file in fileList) {
+            foreach (var file in fileList.ToList()) {
                 try {
-                    File.Delete(file.Path);
+                    File.SetAttributes(file.GetFilePath(), FileAttributes.Normal);
+                    File.Delete(file.GetFilePath());
+                    fileList.Remove(file);
+                }
+                catch (Exception) {
+                    // Undeletable files will be leftover
                 }
             }
+            LoadItemsFromFileList();
         }
 
         private void btnRemoveSelected_Click(object sender, EventArgs e) {
@@ -232,5 +239,26 @@ namespace Archiver {
             searchFilter = new SearchFilter();
         }
 
+        private void dataGridView_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e) {
+            SetFunctionButtonStates(true);
+        }
+
+        private void dataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e) {
+            if (dataGridView.RowCount == 0) {
+                SetFunctionButtonStates(false);
+            }
+        }
+
+        private void SetFunctionButtonStates(bool condition) {
+            btnRemoveAllFiles.Enabled = condition;
+            btnRemoveSelected.Enabled = condition;
+            btnQuarantine.Enabled = condition;
+            btnQuarantineSelected.Enabled = condition;
+            btnExportList.Enabled = condition;
+        }
+
+        private void dataGridView_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e) {
+            SaveColumnWidths();
+        }
     }
 }

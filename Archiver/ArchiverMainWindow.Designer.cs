@@ -47,6 +47,8 @@ namespace Archiver
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnRemoveSelected = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
+            this.btnQuarantineSelected = new System.Windows.Forms.Button();
+            this.btnQuarantine = new System.Windows.Forms.Button();
             this.btnExportList = new System.Windows.Forms.Button();
             this.btnRemoveAllFiles = new System.Windows.Forms.Button();
             this.btnScan = new System.Windows.Forms.Button();
@@ -60,8 +62,6 @@ namespace Archiver
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.tslblFileCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsseparator1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnQuarantine = new System.Windows.Forms.Button();
-            this.btnQuarantineSelected = new System.Windows.Forms.Button();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.contextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -130,6 +130,9 @@ namespace Archiver
             this.dataGridView.Size = new System.Drawing.Size(1040, 445);
             this.dataGridView.TabIndex = 1;
             this.dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_ColumnHeaderMouseClick);
+            this.dataGridView.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridView_ColumnWidthChanged);
+            this.dataGridView.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridView_RowsAdded);
+            this.dataGridView.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dataGridView_RowsRemoved);
             // 
             // colFile
             // 
@@ -233,7 +236,6 @@ namespace Archiver
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnClose.Enabled = false;
             this.btnClose.Location = new System.Drawing.Point(892, 40);
             this.btnClose.Name = "btnClose";
             this.btnClose.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -242,6 +244,32 @@ namespace Archiver
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnQuarantineSelected
+            // 
+            this.btnQuarantineSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnQuarantineSelected.Enabled = false;
+            this.btnQuarantineSelected.Location = new System.Drawing.Point(743, 40);
+            this.btnQuarantineSelected.Name = "btnQuarantineSelected";
+            this.btnQuarantineSelected.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnQuarantineSelected.Size = new System.Drawing.Size(143, 34);
+            this.btnQuarantineSelected.TabIndex = 1;
+            this.btnQuarantineSelected.Text = "Quarantine Selected";
+            this.btnQuarantineSelected.UseVisualStyleBackColor = true;
+            this.btnQuarantineSelected.Click += new System.EventHandler(this.btnQuarantineSelected_Click);
+            // 
+            // btnQuarantine
+            // 
+            this.btnQuarantine.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnQuarantine.Enabled = false;
+            this.btnQuarantine.Location = new System.Drawing.Point(743, 3);
+            this.btnQuarantine.Name = "btnQuarantine";
+            this.btnQuarantine.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnQuarantine.Size = new System.Drawing.Size(143, 34);
+            this.btnQuarantine.TabIndex = 1;
+            this.btnQuarantine.Text = "Quarantine All Files";
+            this.btnQuarantine.UseVisualStyleBackColor = true;
+            this.btnQuarantine.Click += new System.EventHandler(this.btnQuarantine_Click);
             // 
             // btnExportList
             // 
@@ -382,32 +410,6 @@ namespace Archiver
             this.tsseparator1.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
             this.tsseparator1.Name = "tsseparator1";
             this.tsseparator1.Size = new System.Drawing.Size(4, 17);
-            // 
-            // btnQuarantine
-            // 
-            this.btnQuarantine.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnQuarantine.Enabled = false;
-            this.btnQuarantine.Location = new System.Drawing.Point(743, 3);
-            this.btnQuarantine.Name = "btnQuarantine";
-            this.btnQuarantine.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnQuarantine.Size = new System.Drawing.Size(143, 34);
-            this.btnQuarantine.TabIndex = 1;
-            this.btnQuarantine.Text = "Quarantine All Files";
-            this.btnQuarantine.UseVisualStyleBackColor = true;
-            this.btnQuarantine.Click += new System.EventHandler(this.btnQuarantine_Click);
-            // 
-            // btnQuarantineSelected
-            // 
-            this.btnQuarantineSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnQuarantineSelected.Enabled = false;
-            this.btnQuarantineSelected.Location = new System.Drawing.Point(743, 40);
-            this.btnQuarantineSelected.Name = "btnQuarantineSelected";
-            this.btnQuarantineSelected.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnQuarantineSelected.Size = new System.Drawing.Size(143, 34);
-            this.btnQuarantineSelected.TabIndex = 1;
-            this.btnQuarantineSelected.Text = "Quarantine Selected";
-            this.btnQuarantineSelected.UseVisualStyleBackColor = true;
-            this.btnQuarantineSelected.Click += new System.EventHandler(this.btnQuarantineSelected_Click);
             // 
             // toolStripStatusLabel1
             // 
