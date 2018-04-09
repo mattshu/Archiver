@@ -1,2 +1,2 @@
 # Archiver
-A program for the OCD that finds old files that could possibly be purged.
+A program for the OCD that displays file information under selected directories.
