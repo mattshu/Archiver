@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace Archiver {
@@ -27,7 +24,7 @@ namespace Archiver {
                 return 0;
 
             int value;
-            
+
             switch (Column) {
                 case ColumnType.File:
                     value = string.CompareOrdinal(itemX.Name, itemY.Name);
@@ -48,7 +45,8 @@ namespace Archiver {
                     value = DateTime.Compare(itemX.DateCreated, itemY.DateCreated);
                     break;
                 case ColumnType.Path:
-                    value = decimal.Compare(itemX.Path.TakeWhile(c => c == '\\').Count(), itemY.Path.TakeWhile(c => c == '\\').Count());
+                    value = decimal.Compare(itemX.Path.TakeWhile(c => c == '\\').Count(),
+                        itemY.Path.TakeWhile(c => c == '\\').Count());
                     break;
                 default:
                     return 0;
@@ -60,15 +58,16 @@ namespace Archiver {
         }
 
         public int CompareAsSize(FileData itemX, FileData itemY) {
-            decimal itemXSize = GetSize(itemX);
-            decimal itemYSize = GetSize(itemY);
+            var itemXSize = GetSize(itemX);
+            var itemYSize = GetSize(itemY);
             return decimal.Compare(itemXSize, itemYSize);
         }
+
         private static decimal GetSize(FileData data) {
-            string[] splitText = data.Size.Split();
+            var splitText = data.Size.Split();
             if (splitText.Length <= 1) return -1;
-            decimal size = decimal.Parse(splitText[0]);
-            string sizeSuffix = splitText[1];
+            var size = decimal.Parse(splitText[0]);
+            var sizeSuffix = splitText[1];
             switch (sizeSuffix) {
                 case "MB":
                     size *= 1024;

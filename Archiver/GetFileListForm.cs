@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Archiver {
     public partial class GetFileListForm : Form {
-
         public List<FileData> fileList { get; }
         private readonly string path;
         private readonly SearchStyle searchStyle;
@@ -52,9 +49,9 @@ namespace Archiver {
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
             var diTop = new DirectoryInfo(path);
-            int progress = 0;
+            var progress = 0;
             try {
-                foreach (var fi in diTop.EnumerateFiles()) {
+                foreach (var fi in diTop.EnumerateFiles())
                     try {
                         if (e.Cancel) break;
                         if (TryGettingFile(fi, progress++)) continue;
@@ -62,11 +59,10 @@ namespace Archiver {
                     catch (UnauthorizedAccessException) {
                         // Ignore unaccessible files
                     }
-                }
                 if (searchOption != SearchOption.AllDirectories) return;
-                foreach (var di in diTop.EnumerateDirectories("*")) {
+                foreach (var di in diTop.EnumerateDirectories("*"))
                     try {
-                        foreach (var fi in di.EnumerateFiles("*", SearchOption.AllDirectories)) {
+                        foreach (var fi in di.EnumerateFiles("*", SearchOption.AllDirectories))
                             try {
                                 if (e.Cancel) break;
                                 if (TryGettingFile(fi, progress++)) continue;
@@ -74,12 +70,10 @@ namespace Archiver {
                             catch (UnauthorizedAccessException) {
                                 // Ignore unaccessible files
                             }
-                        }
                     }
                     catch (UnauthorizedAccessException) {
                         // Ignore unaccessible files
                     }
-                }
             }
             catch (Exception) {
                 // Ignore unaccessible files
@@ -118,43 +112,35 @@ namespace Archiver {
             var compare = 0;
             if (searchStyle == SearchStyle.DateModified)
                 compare = file.LastWriteTime.CompareTo(searchDate);
-            else if (searchStyle == SearchStyle.DateAccessed) 
+            else if (searchStyle == SearchStyle.DateAccessed)
                 compare = file.LastAccessTime.CompareTo(searchDate);
-            else if (searchStyle == SearchStyle.DateCreated) 
+            else if (searchStyle == SearchStyle.DateCreated)
                 compare = file.CreationTime.CompareTo(searchDate);
             if (searchPeriod == SearchPeriod.OlderThan && compare > 0 ||
-                    searchPeriod == SearchPeriod.NewerThan && compare < 0) return false;
+                searchPeriod == SearchPeriod.NewerThan && compare < 0) return false;
             if (searchPeriod == SearchPeriod.NewerThan)
                 compare *= -1;
             return compare < 0;
         }
 
         private int GetFileCount() {
-            int count = 0;
+            var count = 0;
             var diTop = new DirectoryInfo(path);
             try {
-                foreach (var fi in diTop.EnumerateFiles()) {
+                foreach (var fi in diTop.EnumerateFiles())
                     try {
                         count++;
                     }
-                    catch (UnauthorizedAccessException) {
-                    }
-                }
-                foreach (var di in diTop.EnumerateDirectories("*")) {
+                    catch (UnauthorizedAccessException) { }
+                foreach (var di in diTop.EnumerateDirectories("*"))
                     try {
-                        foreach (var fi in di.EnumerateFiles("*", SearchOption.AllDirectories)) {
+                        foreach (var fi in di.EnumerateFiles("*", SearchOption.AllDirectories))
                             try {
                                 count++;
                             }
-                            catch (UnauthorizedAccessException) {
-                                continue;
-                            }
-                        }
+                            catch (UnauthorizedAccessException) { }
                     }
-                    catch (UnauthorizedAccessException) {
-                        continue;
-                    }
-                }
+                    catch (UnauthorizedAccessException) { }
             }
             catch (Exception) {
                 ;
@@ -172,6 +158,5 @@ namespace Archiver {
         private void status(string msg) {
             lblStatus.Text = msg;
         }
-
     }
 }

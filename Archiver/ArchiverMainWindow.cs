@@ -220,8 +220,7 @@ namespace Archiver {
             dataGridView.DataSource = null;
             BuildDataGridViewColumns();
             if (fileList.Count <= 0) {
-                dataGridView.Rows.Add("No matching files.", "", "", "", "", "", "");
-                Beep();
+                AudioBeep();
                 return;
             }
             dataGridView.DataSource = fileList;
@@ -230,7 +229,7 @@ namespace Archiver {
             tslblFileCount.Text = fileCountText;
         }
 
-        private static void Beep() {
+        private static void AudioBeep() {
             System.Media.SystemSounds.Asterisk.Play();
         }
 
