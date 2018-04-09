@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Archiver {
     public partial class GetFileListForm : Form {
         public List<FileData> fileList { get; }
         private readonly string path;
-        private readonly SearchStyle searchStyle;
-        private readonly SearchPeriod searchPeriod;
-        private readonly DateTime searchDate;
-        private readonly SearchOption searchOption;
-        private readonly bool enableFilter;
+        private readonly SearchFilter searchFilter;
         private int fileCount;
 
         private class ProgressData {
@@ -28,12 +25,8 @@ namespace Archiver {
                 return;
             }
             this.path = path;
-            searchStyle = searchFilter.Style;
-            searchPeriod = searchFilter.Period;
-            searchDate = searchFilter.Date;
-            searchOption = searchFilter.Option;
-            enableFilter = searchFilter.Enabled;
             fileList = new List<FileData>();
+            this.searchFilter = searchFilter;
         }
 
         private void GetFileListForm_Shown(object sender, EventArgs e) {
@@ -59,7 +52,8 @@ namespace Archiver {
                     catch (UnauthorizedAccessException) {
                         // Ignore unaccessible files
                     }
-                if (searchOption != SearchOption.AllDirectories) return;
+                if (searchFilter.Option != SearchOption.AllDirectories)
+                    return;
                 foreach (var di in diTop.EnumerateDirectories("*"))
                     try {
                         foreach (var fi in di.EnumerateFiles("*", SearchOption.AllDirectories))
@@ -99,7 +93,8 @@ namespace Archiver {
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) {
             var progData = (ProgressData) e.UserState;
-            updateProgress(e.ProgressPercentage, progData.Counter, progData.Filename);
+            var statusMsg = "Found: " + progData.Filename;
+            updateProgress(e.ProgressPercentage, statusMsg);
         }
 
         private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
@@ -108,22 +103,25 @@ namespace Archiver {
         }
 
         private bool CheckSearchFilter(FileSystemInfo file) {
-            if (!enableFilter) return true;
+            if (!searchFilter.Enabled) return true;
             var compare = 0;
-            if (searchStyle == SearchStyle.DateModified)
-                compare = file.LastWriteTime.CompareTo(searchDate);
-            else if (searchStyle == SearchStyle.DateAccessed)
-                compare = file.LastAccessTime.CompareTo(searchDate);
-            else if (searchStyle == SearchStyle.DateCreated)
-                compare = file.CreationTime.CompareTo(searchDate);
-            if (searchPeriod == SearchPeriod.OlderThan && compare > 0 ||
-                searchPeriod == SearchPeriod.NewerThan && compare < 0) return false;
-            if (searchPeriod == SearchPeriod.NewerThan)
+            if (searchFilter.Style == SearchStyle.DateModified)
+                compare = file.LastWriteTime.CompareTo(searchFilter.Date);
+            else if (searchFilter.Style == SearchStyle.DateAccessed)
+                compare = file.LastAccessTime.CompareTo(searchFilter.Date);
+            else if (searchFilter.Style == SearchStyle.DateCreated)
+                compare = file.CreationTime.CompareTo(searchFilter.Date);
+            if (searchFilter.Period == SearchPeriod.OlderThan && compare > 0 ||
+                searchFilter.Period == SearchPeriod.NewerThan && compare < 0) return false;
+            if (searchFilter.Period == SearchPeriod.NewerThan)
                 compare *= -1;
             return compare < 0;
         }
 
         private int GetFileCount() {
+            /*var dirInfo = new DirectoryInfo(path);
+            return dirInfo.EnumerateDirectories().AsParallel()
+                .SelectMany(di => di.EnumerateFiles("*", SearchOption.AllDirectories)).Count();*/
             var count = 0;
             var diTop = new DirectoryInfo(path);
             try {
@@ -132,6 +130,8 @@ namespace Archiver {
                         count++;
                     }
                     catch (UnauthorizedAccessException) { }
+                if (searchFilter.Option != SearchOption.AllDirectories)
+                    return count;
                 foreach (var di in diTop.EnumerateDirectories("*"))
                     try {
                         foreach (var fi in di.EnumerateFiles("*", SearchOption.AllDirectories))
@@ -148,11 +148,10 @@ namespace Archiver {
             return count;
         }
 
-        private void updateProgress(int percentage, int counter, string filename) {
+        private void updateProgress(int percentage, string statusMsg) {
             progressBar.Value = percentage;
             lblProgressPercentage.Text = percentage + @"%";
-            lblFileIteration.Text = @"Loading " + counter + @"/" + fileCount + @" files";
-            status("Found: " + filename);
+            status(statusMsg);
         }
 
         private void status(string msg) {

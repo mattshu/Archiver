@@ -34,7 +34,7 @@ namespace Archiver
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ctxOpenFileLocation = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxOpenFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.dateFilterDate = new System.Windows.Forms.DateTimePicker();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.colFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colExtension = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,14 +45,13 @@ namespace Archiver
             this.colPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelTop = new System.Windows.Forms.Panel();
             this.btnRefresh = new System.Windows.Forms.Button();
-            this.btnRemoveSelected = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.btnQuarantineSelected = new System.Windows.Forms.Button();
-            this.btnQuarantine = new System.Windows.Forms.Button();
             this.btnExportList = new System.Windows.Forms.Button();
-            this.btnRemoveAllFiles = new System.Windows.Forms.Button();
             this.btnScan = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblByExtension = new System.Windows.Forms.Label();
+            this.txtFilterByExtension = new System.Windows.Forms.TextBox();
+            this.chkFilterByExtension = new System.Windows.Forms.CheckBox();
             this.radNewerThan = new System.Windows.Forms.RadioButton();
             this.radOlderThan = new System.Windows.Forms.RadioButton();
             this.chkIncludeSubDirs = new System.Windows.Forms.CheckBox();
@@ -92,16 +91,16 @@ namespace Archiver
             this.ctxOpenFile.Size = new System.Drawing.Size(168, 22);
             this.ctxOpenFile.Text = "Open file";
             // 
-            // dateTimePicker
+            // dateFilterDate
             // 
-            this.dateTimePicker.CustomFormat = "MM/dd/yyyy h:mm tt";
-            this.dateTimePicker.Enabled = false;
-            this.dateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker.Location = new System.Drawing.Point(312, 43);
-            this.dateTimePicker.Name = "dateTimePicker";
-            this.dateTimePicker.Size = new System.Drawing.Size(146, 20);
-            this.dateTimePicker.TabIndex = 3;
-            this.dateTimePicker.ValueChanged += new System.EventHandler(this.dateTimePicker_ValueChanged);
+            this.dateFilterDate.CustomFormat = "MM/dd/yyyy h:mm tt";
+            this.dateFilterDate.Enabled = false;
+            this.dateFilterDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateFilterDate.Location = new System.Drawing.Point(394, 46);
+            this.dateFilterDate.Name = "dateFilterDate";
+            this.dateFilterDate.Size = new System.Drawing.Size(146, 20);
+            this.dateFilterDate.TabIndex = 3;
+            this.dateFilterDate.ValueChanged += new System.EventHandler(this.dateTimePicker_ValueChanged);
             // 
             // dataGridView
             // 
@@ -131,8 +130,6 @@ namespace Archiver
             this.dataGridView.TabIndex = 1;
             this.dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_ColumnHeaderMouseClick);
             this.dataGridView.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridView_ColumnWidthChanged);
-            this.dataGridView.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridView_RowsAdded);
-            this.dataGridView.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dataGridView_RowsRemoved);
             // 
             // colFile
             // 
@@ -195,24 +192,20 @@ namespace Archiver
             this.panelTop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelTop.Controls.Add(this.btnRefresh);
-            this.panelTop.Controls.Add(this.btnRemoveSelected);
             this.panelTop.Controls.Add(this.btnClose);
-            this.panelTop.Controls.Add(this.btnQuarantineSelected);
-            this.panelTop.Controls.Add(this.btnQuarantine);
             this.panelTop.Controls.Add(this.btnExportList);
-            this.panelTop.Controls.Add(this.btnRemoveAllFiles);
             this.panelTop.Controls.Add(this.btnScan);
             this.panelTop.Controls.Add(this.groupBox1);
-            this.panelTop.Location = new System.Drawing.Point(3, 5);
+            this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.MinimumSize = new System.Drawing.Size(700, 43);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(1040, 83);
+            this.panelTop.Size = new System.Drawing.Size(1047, 96);
             this.panelTop.TabIndex = 6;
             // 
             // btnRefresh
             // 
             this.btnRefresh.Enabled = false;
-            this.btnRefresh.Location = new System.Drawing.Point(9, 46);
+            this.btnRefresh.Location = new System.Drawing.Point(9, 54);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(108, 34);
             this.btnRefresh.TabIndex = 4;
@@ -220,87 +213,35 @@ namespace Archiver
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
-            // btnRemoveSelected
-            // 
-            this.btnRemoveSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemoveSelected.Enabled = false;
-            this.btnRemoveSelected.Location = new System.Drawing.Point(594, 40);
-            this.btnRemoveSelected.Name = "btnRemoveSelected";
-            this.btnRemoveSelected.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnRemoveSelected.Size = new System.Drawing.Size(143, 34);
-            this.btnRemoveSelected.TabIndex = 1;
-            this.btnRemoveSelected.Text = "Remove Selected";
-            this.btnRemoveSelected.UseVisualStyleBackColor = true;
-            this.btnRemoveSelected.Click += new System.EventHandler(this.btnRemoveSelected_Click);
-            // 
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnClose.Location = new System.Drawing.Point(892, 40);
+            this.btnClose.Location = new System.Drawing.Point(927, 53);
             this.btnClose.Name = "btnClose";
             this.btnClose.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnClose.Size = new System.Drawing.Size(143, 34);
+            this.btnClose.Size = new System.Drawing.Size(108, 34);
             this.btnClose.TabIndex = 1;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // btnQuarantineSelected
-            // 
-            this.btnQuarantineSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnQuarantineSelected.Enabled = false;
-            this.btnQuarantineSelected.Location = new System.Drawing.Point(743, 40);
-            this.btnQuarantineSelected.Name = "btnQuarantineSelected";
-            this.btnQuarantineSelected.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnQuarantineSelected.Size = new System.Drawing.Size(143, 34);
-            this.btnQuarantineSelected.TabIndex = 1;
-            this.btnQuarantineSelected.Text = "Quarantine Selected";
-            this.btnQuarantineSelected.UseVisualStyleBackColor = true;
-            this.btnQuarantineSelected.Click += new System.EventHandler(this.btnQuarantineSelected_Click);
-            // 
-            // btnQuarantine
-            // 
-            this.btnQuarantine.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnQuarantine.Enabled = false;
-            this.btnQuarantine.Location = new System.Drawing.Point(743, 3);
-            this.btnQuarantine.Name = "btnQuarantine";
-            this.btnQuarantine.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnQuarantine.Size = new System.Drawing.Size(143, 34);
-            this.btnQuarantine.TabIndex = 1;
-            this.btnQuarantine.Text = "Quarantine All Files";
-            this.btnQuarantine.UseVisualStyleBackColor = true;
-            this.btnQuarantine.Click += new System.EventHandler(this.btnQuarantine_Click);
-            // 
             // btnExportList
             // 
             this.btnExportList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnExportList.Enabled = false;
-            this.btnExportList.Location = new System.Drawing.Point(892, 3);
+            this.btnExportList.Location = new System.Drawing.Point(927, 10);
             this.btnExportList.Name = "btnExportList";
             this.btnExportList.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnExportList.Size = new System.Drawing.Size(143, 34);
+            this.btnExportList.Size = new System.Drawing.Size(108, 34);
             this.btnExportList.TabIndex = 1;
             this.btnExportList.Text = "Export As List...";
             this.btnExportList.UseVisualStyleBackColor = true;
             this.btnExportList.Click += new System.EventHandler(this.btnExportAsList_Click);
             // 
-            // btnRemoveAllFiles
-            // 
-            this.btnRemoveAllFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemoveAllFiles.Enabled = false;
-            this.btnRemoveAllFiles.Location = new System.Drawing.Point(594, 3);
-            this.btnRemoveAllFiles.Name = "btnRemoveAllFiles";
-            this.btnRemoveAllFiles.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnRemoveAllFiles.Size = new System.Drawing.Size(143, 34);
-            this.btnRemoveAllFiles.TabIndex = 1;
-            this.btnRemoveAllFiles.Text = "Remove All Files";
-            this.btnRemoveAllFiles.UseVisualStyleBackColor = true;
-            this.btnRemoveAllFiles.Click += new System.EventHandler(this.btnRemoveAllFiles_Click);
-            // 
             // btnScan
             // 
             this.btnScan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnScan.Location = new System.Drawing.Point(9, 7);
+            this.btnScan.Location = new System.Drawing.Point(9, 11);
             this.btnScan.Name = "btnScan";
             this.btnScan.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnScan.Size = new System.Drawing.Size(108, 34);
@@ -311,23 +252,57 @@ namespace Archiver
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lblByExtension);
+            this.groupBox1.Controls.Add(this.txtFilterByExtension);
+            this.groupBox1.Controls.Add(this.chkFilterByExtension);
             this.groupBox1.Controls.Add(this.radNewerThan);
-            this.groupBox1.Controls.Add(this.dateTimePicker);
+            this.groupBox1.Controls.Add(this.dateFilterDate);
             this.groupBox1.Controls.Add(this.radOlderThan);
             this.groupBox1.Controls.Add(this.chkIncludeSubDirs);
             this.groupBox1.Controls.Add(this.chkFilter);
             this.groupBox1.Controls.Add(this.cbxSearchStyle);
-            this.groupBox1.Location = new System.Drawing.Point(123, 0);
+            this.groupBox1.Location = new System.Drawing.Point(123, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(465, 80);
+            this.groupBox1.Size = new System.Drawing.Size(798, 85);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
+            // 
+            // lblByExtension
+            // 
+            this.lblByExtension.AutoSize = true;
+            this.lblByExtension.Enabled = false;
+            this.lblByExtension.Location = new System.Drawing.Point(394, 18);
+            this.lblByExtension.Name = "lblByExtension";
+            this.lblByExtension.Size = new System.Drawing.Size(98, 13);
+            this.lblByExtension.TabIndex = 11;
+            this.lblByExtension.Text = "(*.txt, *.doc, *.docx)";
+            // 
+            // txtFilterByExtension
+            // 
+            this.txtFilterByExtension.Enabled = false;
+            this.txtFilterByExtension.Location = new System.Drawing.Point(228, 15);
+            this.txtFilterByExtension.Name = "txtFilterByExtension";
+            this.txtFilterByExtension.Size = new System.Drawing.Size(160, 20);
+            this.txtFilterByExtension.TabIndex = 10;
+            this.txtFilterByExtension.Text = "*.*";
+            // 
+            // chkFilterByExtension
+            // 
+            this.chkFilterByExtension.AutoSize = true;
+            this.chkFilterByExtension.Enabled = false;
+            this.chkFilterByExtension.Location = new System.Drawing.Point(143, 18);
+            this.chkFilterByExtension.Name = "chkFilterByExtension";
+            this.chkFilterByExtension.Size = new System.Drawing.Size(87, 17);
+            this.chkFilterByExtension.TabIndex = 9;
+            this.chkFilterByExtension.Text = "By Extension";
+            this.chkFilterByExtension.UseVisualStyleBackColor = true;
+            this.chkFilterByExtension.CheckedChanged += new System.EventHandler(this.chkFilterByExtension_CheckedChanged);
             // 
             // radNewerThan
             // 
             this.radNewerThan.AutoSize = true;
             this.radNewerThan.Enabled = false;
-            this.radNewerThan.Location = new System.Drawing.Point(226, 57);
+            this.radNewerThan.Location = new System.Drawing.Point(308, 49);
             this.radNewerThan.Name = "radNewerThan";
             this.radNewerThan.Size = new System.Drawing.Size(80, 17);
             this.radNewerThan.TabIndex = 8;
@@ -339,7 +314,7 @@ namespace Archiver
             this.radOlderThan.AutoSize = true;
             this.radOlderThan.Checked = true;
             this.radOlderThan.Enabled = false;
-            this.radOlderThan.Location = new System.Drawing.Point(226, 34);
+            this.radOlderThan.Location = new System.Drawing.Point(228, 49);
             this.radOlderThan.Name = "radOlderThan";
             this.radOlderThan.Size = new System.Drawing.Size(74, 17);
             this.radOlderThan.TabIndex = 8;
@@ -354,7 +329,7 @@ namespace Archiver
             this.chkIncludeSubDirs.AutoSize = true;
             this.chkIncludeSubDirs.Checked = true;
             this.chkIncludeSubDirs.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIncludeSubDirs.Location = new System.Drawing.Point(6, 13);
+            this.chkIncludeSubDirs.Location = new System.Drawing.Point(6, 19);
             this.chkIncludeSubDirs.Name = "chkIncludeSubDirs";
             this.chkIncludeSubDirs.Size = new System.Drawing.Size(131, 17);
             this.chkIncludeSubDirs.TabIndex = 5;
@@ -364,7 +339,7 @@ namespace Archiver
             // chkFilter
             // 
             this.chkFilter.AutoSize = true;
-            this.chkFilter.Location = new System.Drawing.Point(6, 48);
+            this.chkFilter.Location = new System.Drawing.Point(7, 50);
             this.chkFilter.Name = "chkFilter";
             this.chkFilter.Size = new System.Drawing.Size(48, 17);
             this.chkFilter.TabIndex = 6;
@@ -381,7 +356,7 @@ namespace Archiver
             "Date Modified",
             "Date Accessed",
             "Date Created"});
-            this.cbxSearchStyle.Location = new System.Drawing.Point(60, 43);
+            this.cbxSearchStyle.Location = new System.Drawing.Point(61, 45);
             this.cbxSearchStyle.Name = "cbxSearchStyle";
             this.cbxSearchStyle.Size = new System.Drawing.Size(160, 21);
             this.cbxSearchStyle.TabIndex = 7;
@@ -444,7 +419,7 @@ namespace Archiver
         }
         #endregion
         private System.Windows.Forms.Button btnScan;
-        private System.Windows.Forms.DateTimePicker dateTimePicker;
+        private System.Windows.Forms.DateTimePicker dateFilterDate;
         private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.CheckBox chkIncludeSubDirs;
@@ -461,8 +436,6 @@ namespace Archiver
         private ToolStripStatusLabel tslblFileCount;
         private ToolStripStatusLabel tsseparator1;
         private GroupBox groupBox1;
-        private Button btnRemoveAllFiles;
-        private Button btnRemoveSelected;
         private Button btnClose;
         private Button btnExportList;
         private DataGridViewTextBoxColumn colFile;
@@ -472,9 +445,10 @@ namespace Archiver
         private DataGridViewTextBoxColumn colDateAccessed;
         private DataGridViewTextBoxColumn colDateCreated;
         private DataGridViewTextBoxColumn colPath;
-        private Button btnQuarantineSelected;
-        private Button btnQuarantine;
         private ToolStripStatusLabel toolStripStatusLabel1;
+        private Label lblByExtension;
+        private TextBox txtFilterByExtension;
+        private CheckBox chkFilterByExtension;
     }
 }
 

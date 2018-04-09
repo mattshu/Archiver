@@ -28,12 +28,11 @@
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.lblProgressPercentage = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
-            this.lblFileIteration = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(12, 34);
+            this.progressBar.Location = new System.Drawing.Point(12, 48);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(482, 23);
             this.progressBar.TabIndex = 0;
@@ -42,7 +41,7 @@
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Enabled = false;
-            this.btnCancel.Location = new System.Drawing.Point(419, 73);
+            this.btnCancel.Location = new System.Drawing.Point(419, 84);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 2;
@@ -60,7 +59,7 @@
             // lblProgressPercentage
             // 
             this.lblProgressPercentage.AutoSize = true;
-            this.lblProgressPercentage.Location = new System.Drawing.Point(473, 18);
+            this.lblProgressPercentage.Location = new System.Drawing.Point(473, 32);
             this.lblProgressPercentage.Name = "lblProgressPercentage";
             this.lblProgressPercentage.Size = new System.Drawing.Size(21, 13);
             this.lblProgressPercentage.TabIndex = 5;
@@ -69,29 +68,19 @@
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(12, 78);
+            this.lblStatus.Location = new System.Drawing.Point(12, 20);
             this.lblStatus.MinimumSize = new System.Drawing.Size(400, 0);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(400, 13);
             this.lblStatus.TabIndex = 7;
             this.lblStatus.Text = "Loading files. This may take awhile...";
             // 
-            // lblFileIteration
-            // 
-            this.lblFileIteration.AutoSize = true;
-            this.lblFileIteration.Location = new System.Drawing.Point(12, 18);
-            this.lblFileIteration.Name = "lblFileIteration";
-            this.lblFileIteration.Size = new System.Drawing.Size(45, 13);
-            this.lblFileIteration.TabIndex = 5;
-            this.lblFileIteration.Text = "0/0 files";
-            // 
             // GetFileListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(506, 111);
+            this.ClientSize = new System.Drawing.Size(506, 119);
             this.Controls.Add(this.lblStatus);
-            this.Controls.Add(this.lblFileIteration);
             this.Controls.Add(this.lblProgressPercentage);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.progressBar);
@@ -114,7 +103,6 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker;
         private System.Windows.Forms.Label lblProgressPercentage;
         private System.Windows.Forms.Label lblStatus;
-        private System.Windows.Forms.Label lblFileIteration;
     }
 }
 

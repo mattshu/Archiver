@@ -33,39 +33,6 @@ namespace Archiver {
             RefreshDataGridView();
         }
 
-        private void btnRemoveAllFiles_Click(object sender, EventArgs e) {
-            const string removeConfirmText = "Are you sure you wish to remove all files? This cannot be undone.";
-            if (!ConfirmDialog(removeConfirmText)) return;
-            foreach (var file in fileList.ToList()) {
-                try {
-                    File.SetAttributes(file.GetFilePath(), FileAttributes.Normal);
-                    File.Delete(file.GetFilePath());
-                    fileList.Remove(file);
-                }
-                catch (Exception) {
-                    // Undeletable files will be leftover
-                }
-            }
-            LoadItemsFromFileList();
-        }
-
-        private void btnRemoveSelected_Click(object sender, EventArgs e) {
-
-        }
-
-        private void btnQuarantine_Click(object sender, EventArgs e) {
-
-        }
-
-        private void btnQuarantineSelected_Click(object sender, EventArgs e) {
-            
-        }
-
-        private bool ConfirmDialog(string msg, string title = "Confirm") {
-            return MessageBox.Show(msg, title, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation) ==
-                   DialogResult.Yes;
-        }
-
         private void btnExportAsList_Click(object sender, EventArgs e) {
 
         }
@@ -93,11 +60,17 @@ namespace Archiver {
             EnableFilterControls(chkFilter.Checked);
         }
 
+        private void chkFilterByExtension_CheckedChanged(object sender, EventArgs e) {
+            txtFilterByExtension.Enabled = chkFilterByExtension.Checked;
+        }
+
         private void EnableFilterControls(bool condition) {
             cbxSearchStyle.Enabled = condition;
             radOlderThan.Enabled = condition;
             radNewerThan.Enabled = condition;
-            dateTimePicker.Enabled = condition;
+            dateFilterDate.Enabled = condition;
+            chkFilterByExtension.Enabled = condition;
+            txtFilterByExtension.Enabled = condition;
         }
 
         private void cbxSearchStyle_SelectedIndexChanged(object sender, EventArgs e) {
@@ -105,16 +78,21 @@ namespace Archiver {
             btnRefresh.Enabled = DataListHasItems();
         }
 
+        private void dataGridView_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e) {
+            SaveColumnWidths();
+        }
+
         private void contextMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
-            if (dataGridView.SelectedRows.Count <= 0) return;
             var name = (string) dataGridView.SelectedRows[0].Cells["File"].Value;
             var path = (string) dataGridView.SelectedRows[0].Cells["Path"].Value;
-            if (e.ClickedItem == ctxOpenFileLocation) {
-                System.Diagnostics.Process.Start("explorer.exe", path);
-            }
-            else if (e.ClickedItem == ctxOpenFile) {
-                var pathToFile = path + "\\" + name;
-                System.Diagnostics.Process.Start("explorer.exe", pathToFile);
+            if (dataGridView.SelectedRows.Count == 1) {
+                if (e.ClickedItem == ctxOpenFileLocation) {
+                    System.Diagnostics.Process.Start("explorer.exe", path);
+                }
+                else if (e.ClickedItem == ctxOpenFile) {
+                    var pathToFile = path + "\\" + name;
+                    System.Diagnostics.Process.Start("explorer.exe", pathToFile);
+                }
             }
         }
 
@@ -178,13 +156,14 @@ namespace Archiver {
             dataGridView.Columns[4].Width = Properties.Settings.Default.colDateAccWidth;
             dataGridView.Columns[5].Width = Properties.Settings.Default.colDateCreateWidth;
             dataGridView.Columns[6].Width = Properties.Settings.Default.colPathWidth;
+            System.Diagnostics.Debug.WriteLineIf(3>=2, new FileData(new FileInfo("f")), "Test");
         }
 
         private void SetSearchFilter() {
             searchFilter = new SearchFilter {
                 Style = GetSearchStyle(),
                 Period = GetSearchPeriod(),
-                Date = dateTimePicker.Value,
+                Date = dateFilterDate.Value,
                 Option = GetSearchOption(),
                 Enabled = chkFilter.Checked
             };
@@ -236,28 +215,6 @@ namespace Archiver {
         public ArchiverMainWindow() {
             InitializeComponent();
             searchFilter = new SearchFilter();
-        }
-
-        private void dataGridView_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e) {
-            SetFunctionButtonStates(true);
-        }
-
-        private void dataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e) {
-            if (dataGridView.RowCount == 0) {
-                SetFunctionButtonStates(false);
-            }
-        }
-
-        private void SetFunctionButtonStates(bool condition) {
-            btnRemoveAllFiles.Enabled = condition;
-            btnRemoveSelected.Enabled = condition;
-            btnQuarantine.Enabled = condition;
-            btnQuarantineSelected.Enabled = condition;
-            btnExportList.Enabled = condition;
-        }
-
-        private void dataGridView_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e) {
-            SaveColumnWidths();
         }
     }
 }
