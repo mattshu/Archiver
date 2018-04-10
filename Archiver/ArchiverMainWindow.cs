@@ -17,6 +17,7 @@ namespace Archiver {
         private void ArchiverMainWindow_Shown(object sender, EventArgs e) {
             cbxSearchStyle.SelectedIndex = 0;
             LoadColumnWidths();
+            System.Diagnostics.Debug.WriteLine(new DirectoryInfo(@"D:\shu\Documents\").EnumerateFiles("*", SearchOption.AllDirectories).Count());
         }
 
         private void ArchiverMainWindow_FormClosing(object sender, FormClosingEventArgs e) {
@@ -76,10 +77,6 @@ namespace Archiver {
         private void cbxSearchStyle_SelectedIndexChanged(object sender, EventArgs e) {
             searchFilter.Style = GetSearchStyle();
             btnRefresh.Enabled = DataListHasItems();
-        }
-
-        private void dataGridView_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e) {
-            SaveColumnWidths();
         }
 
         private void contextMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
@@ -156,7 +153,6 @@ namespace Archiver {
             dataGridView.Columns[4].Width = Properties.Settings.Default.colDateAccWidth;
             dataGridView.Columns[5].Width = Properties.Settings.Default.colDateCreateWidth;
             dataGridView.Columns[6].Width = Properties.Settings.Default.colPathWidth;
-            System.Diagnostics.Debug.WriteLineIf(3>=2, new FileData(new FileInfo("f")), "Test");
         }
 
         private void SetSearchFilter() {

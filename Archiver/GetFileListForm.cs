@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Archiver {
@@ -11,11 +10,6 @@ namespace Archiver {
         private readonly string path;
         private readonly SearchFilter searchFilter;
         private int fileCount;
-
-        private class ProgressData {
-            public int Counter;
-            public string Filename;
-        }
 
         public GetFileListForm(string path, SearchFilter searchFilter) {
             InitializeComponent();
@@ -81,19 +75,18 @@ namespace Archiver {
             return true;
         }
 
-        private void ReportProgress(FileInfo fi, int progress) {
-            // Send updates every 100 files (every 10 if < 100)
-            if (progress < 100 && progress % 10 == 0 || progress % 100 == 0) {
+        private void ReportProgress(FileInfo file, int progress) {
+            // Send updates every 200 files
+            if (progress % 200 == 0) {
                 var prog = progress / (double) fileCount;
                 var perc = Convert.ToInt32(prog * 100);
-                var progData = new ProgressData {Counter = progress, Filename = fi.Name};
-                backgroundWorker.ReportProgress(perc, progData);
+                backgroundWorker.ReportProgress(perc, file.Name);
             }
         }
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) {
-            var progData = (ProgressData) e.UserState;
-            var statusMsg = "Found: " + progData.Filename;
+            var fname = (string) e.UserState;
+            var statusMsg = "Found: " + fname;
             updateProgress(e.ProgressPercentage, statusMsg);
         }
 
@@ -119,9 +112,6 @@ namespace Archiver {
         }
 
         private int GetFileCount() {
-            /*var dirInfo = new DirectoryInfo(path);
-            return dirInfo.EnumerateDirectories().AsParallel()
-                .SelectMany(di => di.EnumerateFiles("*", SearchOption.AllDirectories)).Count();*/
             var count = 0;
             var diTop = new DirectoryInfo(path);
             try {
@@ -137,12 +127,13 @@ namespace Archiver {
                         foreach (var fi in di.EnumerateFiles("*", SearchOption.AllDirectories))
                             try {
                                 count++;
+                            } catch (UnauthorizedAccessException) {
+                                continue;
                             }
-                            catch (UnauthorizedAccessException) { }
+                    } catch (UnauthorizedAccessException) {
+                        continue;
                     }
-                    catch (UnauthorizedAccessException) { }
-            }
-            catch (Exception) {
+            } catch (Exception) {
                 ;
             }
             return count;
