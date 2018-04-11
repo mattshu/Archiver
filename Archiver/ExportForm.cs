@@ -73,7 +73,7 @@ namespace Archiver {
                 var columns = GetColumns();
                 var exporter = new Exporter(fileList, path, format, columns);
                 exporter.Start();
-                MessageBox.Show(@"Export saved to: " + path, @"Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Dialogs.Info(@"Export saved to: " + path, @"Done");
             }
             catch (Exception e) {
                 DialogResult = DialogResult.Abort;

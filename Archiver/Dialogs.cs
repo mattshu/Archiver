@@ -8,11 +8,15 @@ namespace Archiver {
         }
 
         public static void ErrorOK(string message, string title = "Error") {
-            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
 
         public static void Message(string message, string title = "Archiver") {
-            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+        }
+
+        public static void Info(string message, string title = "Information") {
+            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
