@@ -1,6 +1,6 @@
 ﻿namespace Archiver {
     public enum ColumnType {
-        File,
+        Name,
         Extension,
         Size,
         DateModified,

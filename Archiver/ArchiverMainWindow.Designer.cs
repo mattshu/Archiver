@@ -36,17 +36,10 @@ namespace Archiver
             this.ctxOpenFile = new System.Windows.Forms.ToolStripMenuItem();
             this.dateFilterDate = new System.Windows.Forms.DateTimePicker();
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.colFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colExtension = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDateModified = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDateAccessed = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDateCreated = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelTop = new System.Windows.Forms.Panel();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.btnExportList = new System.Windows.Forms.Button();
+            this.btnExport = new System.Windows.Forms.Button();
             this.btnScan = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblByExtension = new System.Windows.Forms.Label();
@@ -62,6 +55,13 @@ namespace Archiver
             this.tslblFileCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsseparator1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.colFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colExtension = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDateModified = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDateAccessed = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDateCreated = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panelTop.SuspendLayout();
@@ -130,69 +130,13 @@ namespace Archiver
             this.dataGridView.TabIndex = 1;
             this.dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_ColumnHeaderMouseClick);
             // 
-            // colFile
-            // 
-            this.colFile.DataPropertyName = "Name";
-            this.colFile.HeaderText = "File";
-            this.colFile.Name = "colFile";
-            this.colFile.ReadOnly = true;
-            this.colFile.Width = 150;
-            // 
-            // colExtension
-            // 
-            this.colExtension.DataPropertyName = "Extension";
-            this.colExtension.HeaderText = "Extension";
-            this.colExtension.Name = "colExtension";
-            this.colExtension.ReadOnly = true;
-            this.colExtension.Width = 75;
-            // 
-            // colSize
-            // 
-            this.colSize.DataPropertyName = "Size";
-            this.colSize.HeaderText = "Size";
-            this.colSize.Name = "colSize";
-            this.colSize.ReadOnly = true;
-            this.colSize.Width = 75;
-            // 
-            // colDateModified
-            // 
-            this.colDateModified.DataPropertyName = "DateModified";
-            this.colDateModified.HeaderText = "Date Modified";
-            this.colDateModified.Name = "colDateModified";
-            this.colDateModified.ReadOnly = true;
-            this.colDateModified.Width = 125;
-            // 
-            // colDateAccessed
-            // 
-            this.colDateAccessed.DataPropertyName = "DateAccessed";
-            this.colDateAccessed.HeaderText = "Date Accessed";
-            this.colDateAccessed.Name = "colDateAccessed";
-            this.colDateAccessed.ReadOnly = true;
-            this.colDateAccessed.Width = 125;
-            // 
-            // colDateCreated
-            // 
-            this.colDateCreated.DataPropertyName = "DateCreated";
-            this.colDateCreated.HeaderText = "Date Created";
-            this.colDateCreated.Name = "colDateCreated";
-            this.colDateCreated.ReadOnly = true;
-            this.colDateCreated.Width = 125;
-            // 
-            // colPath
-            // 
-            this.colPath.DataPropertyName = "Path";
-            this.colPath.HeaderText = "Path";
-            this.colPath.Name = "colPath";
-            this.colPath.ReadOnly = true;
-            this.colPath.Width = 350;
-            // 
             // panelTop
             // 
             this.panelTop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelTop.Controls.Add(this.btnRefresh);
             this.panelTop.Controls.Add(this.btnClose);
-            this.panelTop.Controls.Add(this.btnExportList);
+            this.panelTop.Controls.Add(this.btnExport);
             this.panelTop.Controls.Add(this.btnScan);
             this.panelTop.Controls.Add(this.groupBox1);
             this.panelTop.Location = new System.Drawing.Point(0, 0);
@@ -224,18 +168,17 @@ namespace Archiver
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // btnExportList
+            // btnExport
             // 
-            this.btnExportList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnExportList.Enabled = false;
-            this.btnExportList.Location = new System.Drawing.Point(927, 10);
-            this.btnExportList.Name = "btnExportList";
-            this.btnExportList.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnExportList.Size = new System.Drawing.Size(108, 34);
-            this.btnExportList.TabIndex = 1;
-            this.btnExportList.Text = "Export As List...";
-            this.btnExportList.UseVisualStyleBackColor = true;
-            this.btnExportList.Click += new System.EventHandler(this.btnExportAsList_Click);
+            this.btnExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExport.Location = new System.Drawing.Point(927, 10);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnExport.Size = new System.Drawing.Size(108, 34);
+            this.btnExport.TabIndex = 1;
+            this.btnExport.Text = "Export...";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // btnScan
             // 
@@ -391,6 +334,62 @@ namespace Archiver
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
+            // colFile
+            // 
+            this.colFile.DataPropertyName = "Name";
+            this.colFile.HeaderText = "Filename";
+            this.colFile.Name = "colFile";
+            this.colFile.ReadOnly = true;
+            this.colFile.Width = 150;
+            // 
+            // colExtension
+            // 
+            this.colExtension.DataPropertyName = "Extension";
+            this.colExtension.HeaderText = "Extension";
+            this.colExtension.Name = "colExtension";
+            this.colExtension.ReadOnly = true;
+            this.colExtension.Width = 75;
+            // 
+            // colSize
+            // 
+            this.colSize.DataPropertyName = "Size";
+            this.colSize.HeaderText = "Size";
+            this.colSize.Name = "colSize";
+            this.colSize.ReadOnly = true;
+            this.colSize.Width = 75;
+            // 
+            // colDateModified
+            // 
+            this.colDateModified.DataPropertyName = "DateModified";
+            this.colDateModified.HeaderText = "Date Modified";
+            this.colDateModified.Name = "colDateModified";
+            this.colDateModified.ReadOnly = true;
+            this.colDateModified.Width = 125;
+            // 
+            // colDateAccessed
+            // 
+            this.colDateAccessed.DataPropertyName = "DateAccessed";
+            this.colDateAccessed.HeaderText = "Date Accessed";
+            this.colDateAccessed.Name = "colDateAccessed";
+            this.colDateAccessed.ReadOnly = true;
+            this.colDateAccessed.Width = 125;
+            // 
+            // colDateCreated
+            // 
+            this.colDateCreated.DataPropertyName = "DateCreated";
+            this.colDateCreated.HeaderText = "Date Created";
+            this.colDateCreated.Name = "colDateCreated";
+            this.colDateCreated.ReadOnly = true;
+            this.colDateCreated.Width = 125;
+            // 
+            // colPath
+            // 
+            this.colPath.DataPropertyName = "Path";
+            this.colPath.HeaderText = "Path";
+            this.colPath.Name = "colPath";
+            this.colPath.ReadOnly = true;
+            this.colPath.Width = 350;
+            // 
             // ArchiverMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -436,7 +435,11 @@ namespace Archiver
         private ToolStripStatusLabel tsseparator1;
         private GroupBox groupBox1;
         private Button btnClose;
-        private Button btnExportList;
+        private Button btnExport;
+        private ToolStripStatusLabel toolStripStatusLabel1;
+        private Label lblByExtension;
+        private TextBox txtFilterByExtension;
+        private CheckBox chkFilterByExtension;
         private DataGridViewTextBoxColumn colFile;
         private DataGridViewTextBoxColumn colExtension;
         private DataGridViewTextBoxColumn colSize;
@@ -444,10 +447,6 @@ namespace Archiver
         private DataGridViewTextBoxColumn colDateAccessed;
         private DataGridViewTextBoxColumn colDateCreated;
         private DataGridViewTextBoxColumn colPath;
-        private ToolStripStatusLabel toolStripStatusLabel1;
-        private Label lblByExtension;
-        private TextBox txtFilterByExtension;
-        private CheckBox chkFilterByExtension;
     }
 }
 

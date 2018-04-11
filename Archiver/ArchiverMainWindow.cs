@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Archiver {
@@ -17,7 +16,6 @@ namespace Archiver {
         private void ArchiverMainWindow_Shown(object sender, EventArgs e) {
             cbxSearchStyle.SelectedIndex = 0;
             LoadColumnWidths();
-            System.Diagnostics.Debug.WriteLine(new DirectoryInfo(@"D:\shu\Documents\").EnumerateFiles("*", SearchOption.AllDirectories).Count());
         }
 
         private void ArchiverMainWindow_FormClosing(object sender, FormClosingEventArgs e) {
@@ -34,8 +32,14 @@ namespace Archiver {
             RefreshDataGridView();
         }
 
-        private void btnExportAsList_Click(object sender, EventArgs e) {
+        private void btnExport_Click(object sender, EventArgs e) {
+            // TODO Under construction, remove when finished
+            //if (!DataListHasItems()) return;
+            ExportFileList();
+        }
 
+        private void ExportFileList() {
+            new ExportForm(fileList).ShowDialog();
         }
 
         private void btnClose_Click(object sender, EventArgs e) {

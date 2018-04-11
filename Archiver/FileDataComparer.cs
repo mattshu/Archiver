@@ -26,7 +26,7 @@ namespace Archiver {
             int value;
 
             switch (Column) {
-                case ColumnType.File:
+                case ColumnType.Name:
                     value = string.CompareOrdinal(itemX.Name, itemY.Name);
                     break;
                 case ColumnType.Extension:

@@ -62,8 +62,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColumnType.cs" />
+    <Compile Include="Dialogs.cs" />
+    <Compile Include="Exporter.cs" />
+    <Compile Include="ExportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExportForm.Designer.cs">
+      <DependentUpon>ExportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExportFormat.cs" />
     <Compile Include="FileDataComparer.cs" />
-    <Compile Include="Error.cs" />
     <Compile Include="FileData.cs" />
     <Compile Include="GetFileListForm.cs">
       <SubType>Form</SubType>
@@ -84,6 +92,9 @@
     <Compile Include="SearchStyle.cs" />
     <EmbeddedResource Include="ArchiverMainWindow.resx">
       <DependentUpon>ArchiverMainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExportForm.resx">
+      <DependentUpon>ExportForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GetFileListForm.resx">
       <DependentUpon>GetFileListForm.cs</DependentUpon>

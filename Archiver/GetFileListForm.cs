@@ -9,12 +9,11 @@ namespace Archiver {
         public List<FileData> fileList { get; }
         private readonly string path;
         private readonly SearchFilter searchFilter;
-        private int fileCount;
 
         public GetFileListForm(string path, SearchFilter searchFilter) {
             InitializeComponent();
             if (string.IsNullOrEmpty(path)) {
-                Error.Show("Invalid path", "Cannot Load Files");
+                Dialogs.ErrorOK("Invalid path", "Cannot Load Files");
                 Load += (s, e) => Close();
                 return;
             }
@@ -24,12 +23,6 @@ namespace Archiver {
         }
 
         private void GetFileListForm_Shown(object sender, EventArgs e) {
-            Refresh();
-            fileCount = GetFileCount();
-            if (fileCount <= 0) {
-                Close();
-                return;
-            }
             btnCancel.Enabled = true;
             backgroundWorker.RunWorkerAsync();
         }
@@ -41,7 +34,7 @@ namespace Archiver {
                 foreach (var fi in diTop.EnumerateFiles())
                     try {
                         if (e.Cancel) break;
-                        if (TryGettingFile(fi, progress++)) continue;
+                        TryGettingFile(progress++, fi);
                     }
                     catch (UnauthorizedAccessException) {
                         // Ignore unaccessible files
@@ -53,7 +46,7 @@ namespace Archiver {
                         foreach (var fi in di.EnumerateFiles("*", SearchOption.AllDirectories))
                             try {
                                 if (e.Cancel) break;
-                                if (TryGettingFile(fi, progress++)) continue;
+                                TryGettingFile(progress++, fi);
                             }
                             catch (UnauthorizedAccessException) {
                                 // Ignore unaccessible files
@@ -68,26 +61,23 @@ namespace Archiver {
             }
         }
 
-        private bool TryGettingFile(FileInfo fi, int progress) {
-            if (!CheckSearchFilter(fi)) return false;
-            fileList.Add(new FileData(fi));
-            ReportProgress(fi, progress);
-            return true;
+        private void TryGettingFile(int progress, FileInfo file) {
+            if (!CheckSearchFilter(file)) return;
+            fileList.Add(new FileData(file));
+            ReportProgress(progress, file);
         }
 
-        private void ReportProgress(FileInfo file, int progress) {
-            // Send updates every 200 files
-            if (progress % 200 == 0) {
-                var prog = progress / (double) fileCount;
-                var perc = Convert.ToInt32(prog * 100);
-                backgroundWorker.ReportProgress(perc, file.Name);
+        private void ReportProgress(int progress, FileInfo file) {
+            // Send updates every 100 files
+            if (progress % 100 == 0) {
+                backgroundWorker.ReportProgress(progress, file.Name);
             }
         }
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) {
             var fname = (string) e.UserState;
             var statusMsg = "Found: " + fname;
-            updateProgress(e.ProgressPercentage, statusMsg);
+            UpdateProgress(e.ProgressPercentage, statusMsg);
         }
 
         private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
@@ -111,41 +101,12 @@ namespace Archiver {
             return compare < 0;
         }
 
-        private int GetFileCount() {
-            var count = 0;
-            var diTop = new DirectoryInfo(path);
-            try {
-                foreach (var fi in diTop.EnumerateFiles())
-                    try {
-                        count++;
-                    }
-                    catch (UnauthorizedAccessException) { }
-                if (searchFilter.Option != SearchOption.AllDirectories)
-                    return count;
-                foreach (var di in diTop.EnumerateDirectories("*"))
-                    try {
-                        foreach (var fi in di.EnumerateFiles("*", SearchOption.AllDirectories))
-                            try {
-                                count++;
-                            } catch (UnauthorizedAccessException) {
-                                continue;
-                            }
-                    } catch (UnauthorizedAccessException) {
-                        continue;
-                    }
-            } catch (Exception) {
-                ;
-            }
-            return count;
+        private void UpdateProgress(int foundSoFar, string statusMsg) {
+            lblFilesFound.Text = foundSoFar + @" files found so far";
+            SetStatus(statusMsg);
         }
 
-        private void updateProgress(int percentage, string statusMsg) {
-            progressBar.Value = percentage;
-            lblProgressPercentage.Text = percentage + @"%";
-            status(statusMsg);
-        }
-
-        private void status(string msg) {
+        private void SetStatus(string msg) {
             lblStatus.Text = msg;
         }
     }
