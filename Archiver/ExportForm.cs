@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -31,16 +30,27 @@ namespace Archiver {
 
         private void PopulateFormatList() {
             foreach (var format in Enum.GetValues(typeof(ExportFormat)))
-                cbxFormat.Items.Add((ExportFormat) format);
+                cbxFormat.Items.Add((ExportFormat)format);
         }
 
         private void btnMoveUp_Click(object sender, EventArgs e) {
-            var index = chklistExclusions.SelectedIndex;
-            Debug.WriteLine(index);
+            MoveSelectedListItem(-1);
         }
 
         private void btnMoveDown_Click(object sender, EventArgs e) {
-            // TODO
+            MoveSelectedListItem(1);
+        }
+
+        private void MoveSelectedListItem(int direction) {
+            if (direction < -1 || direction > 1) return;
+            var index = chklistExclusions.SelectedIndex;
+            if (index + direction < 0 || index + direction >= chklistExclusions.Items.Count) return;
+            var itemChecked = chklistExclusions.GetItemChecked(index);
+            var itemToMove = chklistExclusions.Items[index];
+            chklistExclusions.Items.RemoveAt(index);
+            chklistExclusions.Items.Insert(index + direction, itemToMove);
+            chklistExclusions.SetItemChecked(index + direction, itemChecked);
+            chklistExclusions.SelectedIndex = index + direction;
         }
 
         private void btnExport_Click(object sender, EventArgs e) {
@@ -59,7 +69,6 @@ namespace Archiver {
             }
             catch (Exception e) {
                 DialogResult = DialogResult.Abort;
-                Debug.WriteLine(e.StackTrace);
                 Dialogs.ErrorOK("Unable to export file:\n " + e.Message, @"Export Error");
             }
             finally {
@@ -71,7 +80,7 @@ namespace Archiver {
             var columns = new List<ColumnType>();
             for (var i = 0; i < chklistExclusions.Items.Count; i++)
                 if (chklistExclusions.GetItemChecked(i))
-                    columns.Add((ColumnType)Enum.Parse(typeof(ColumnType), chklistExclusions.GetItemText(i).Replace(" ", "")));
+                    columns.Add((ColumnType)Enum.Parse(typeof(ColumnType), ((string)chklistExclusions.Items[i]).Replace(" ", "")));
             return columns;
         }
 
