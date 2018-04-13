@@ -5,6 +5,15 @@ using System.IO;
 using System.Windows.Forms;
 
 namespace Archiver {
+    /*  (in no particular order)
+     *  
+     *  TODO  1. MoveUp, MoveDown in Export form
+     *  TODO  2. Search by extensions
+     *  TODO  3. 
+     *  
+     */
+
+
     public partial class ArchiverMainWindow : Form {
 
         private SearchFilter searchFilter;

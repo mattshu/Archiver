@@ -11,10 +11,6 @@ namespace Archiver {
         public DateTime DateCreated { get; }
         public string Path { get; }
 
-        public FileData() {
-            
-        }
-
         public FileData(string filePath) {
             var fileInfo = new FileInfo(filePath);
             Name = fileInfo.Name;
