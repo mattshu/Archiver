@@ -29,9 +29,6 @@
             this.cbxFormat = new System.Windows.Forms.ComboBox();
             this.chklistExclusions = new System.Windows.Forms.CheckedListBox();
             this.lblFields = new System.Windows.Forms.Label();
-            this.lblPath = new System.Windows.Forms.Label();
-            this.txtPath = new System.Windows.Forms.TextBox();
-            this.btnBrowse = new System.Windows.Forms.Button();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.btnMoveUp = new System.Windows.Forms.Button();
             this.btnMoveDown = new System.Windows.Forms.Button();
@@ -60,7 +57,7 @@
             // lblFormat
             // 
             this.lblFormat.AutoSize = true;
-            this.lblFormat.Location = new System.Drawing.Point(11, 47);
+            this.lblFormat.Location = new System.Drawing.Point(8, 18);
             this.lblFormat.Name = "lblFormat";
             this.lblFormat.Size = new System.Drawing.Size(42, 13);
             this.lblFormat.TabIndex = 1;
@@ -70,7 +67,7 @@
             // 
             this.cbxFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxFormat.FormattingEnabled = true;
-            this.cbxFormat.Location = new System.Drawing.Point(79, 44);
+            this.cbxFormat.Location = new System.Drawing.Point(76, 15);
             this.cbxFormat.Name = "cbxFormat";
             this.cbxFormat.Size = new System.Drawing.Size(175, 21);
             this.cbxFormat.TabIndex = 2;
@@ -86,47 +83,19 @@
             "Date Accessed",
             "Date Created",
             "Path"});
-            this.chklistExclusions.Location = new System.Drawing.Point(79, 71);
+            this.chklistExclusions.Location = new System.Drawing.Point(76, 42);
             this.chklistExclusions.Name = "chklistExclusions";
-            this.chklistExclusions.Size = new System.Drawing.Size(175, 79);
+            this.chklistExclusions.Size = new System.Drawing.Size(175, 109);
             this.chklistExclusions.TabIndex = 3;
             // 
             // lblFields
             // 
             this.lblFields.AutoSize = true;
-            this.lblFields.Location = new System.Drawing.Point(11, 71);
+            this.lblFields.Location = new System.Drawing.Point(8, 42);
             this.lblFields.Name = "lblFields";
             this.lblFields.Size = new System.Drawing.Size(37, 13);
             this.lblFields.TabIndex = 4;
             this.lblFields.Text = "Fields:";
-            // 
-            // lblPath
-            // 
-            this.lblPath.AutoSize = true;
-            this.lblPath.Location = new System.Drawing.Point(11, 21);
-            this.lblPath.Name = "lblPath";
-            this.lblPath.Size = new System.Drawing.Size(32, 13);
-            this.lblPath.TabIndex = 5;
-            this.lblPath.Text = "Path:";
-            // 
-            // txtPath
-            // 
-            this.txtPath.Location = new System.Drawing.Point(79, 18);
-            this.txtPath.Name = "txtPath";
-            this.txtPath.ReadOnly = true;
-            this.txtPath.Size = new System.Drawing.Size(175, 20);
-            this.txtPath.TabIndex = 6;
-            this.txtPath.MouseClick += new System.Windows.Forms.MouseEventHandler(this.txtPath_MouseClick);
-            // 
-            // btnBrowse
-            // 
-            this.btnBrowse.Location = new System.Drawing.Point(260, 16);
-            this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(27, 23);
-            this.btnBrowse.TabIndex = 7;
-            this.btnBrowse.Text = "...";
-            this.btnBrowse.UseVisualStyleBackColor = true;
-            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
             // saveFileDialog
             // 
@@ -137,7 +106,7 @@
             // 
             // btnMoveUp
             // 
-            this.btnMoveUp.Location = new System.Drawing.Point(260, 98);
+            this.btnMoveUp.Location = new System.Drawing.Point(257, 99);
             this.btnMoveUp.Name = "btnMoveUp";
             this.btnMoveUp.Size = new System.Drawing.Size(27, 23);
             this.btnMoveUp.TabIndex = 8;
@@ -147,7 +116,7 @@
             // 
             // btnMoveDown
             // 
-            this.btnMoveDown.Location = new System.Drawing.Point(260, 127);
+            this.btnMoveDown.Location = new System.Drawing.Point(257, 128);
             this.btnMoveDown.Name = "btnMoveDown";
             this.btnMoveDown.Size = new System.Drawing.Size(27, 23);
             this.btnMoveDown.TabIndex = 8;
@@ -162,9 +131,6 @@
             this.ClientSize = new System.Drawing.Size(318, 204);
             this.Controls.Add(this.btnMoveDown);
             this.Controls.Add(this.btnMoveUp);
-            this.Controls.Add(this.btnBrowse);
-            this.Controls.Add(this.txtPath);
-            this.Controls.Add(this.lblPath);
             this.Controls.Add(this.lblFields);
             this.Controls.Add(this.chklistExclusions);
             this.Controls.Add(this.cbxFormat);
@@ -189,9 +155,6 @@
         private System.Windows.Forms.ComboBox cbxFormat;
         private System.Windows.Forms.CheckedListBox chklistExclusions;
         private System.Windows.Forms.Label lblFields;
-        private System.Windows.Forms.Label lblPath;
-        private System.Windows.Forms.TextBox txtPath;
-        private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.Button btnMoveUp;
         private System.Windows.Forms.Button btnMoveDown;

@@ -33,8 +33,7 @@ namespace Archiver {
         }
 
         private void btnExport_Click(object sender, EventArgs e) {
-            // TODO Under construction, remove when finished
-            //if (!DataListHasItems()) return;
+            if (!DataListHasItems()) return;
             ExportFileList();
         }
 

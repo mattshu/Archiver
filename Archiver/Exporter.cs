@@ -1,36 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Archiver {
     internal class Exporter {
         private readonly List<FileData> fileList;
-        private readonly string path;
         private readonly ExportFormat format;
         private readonly List<ColumnType> columns;
 
-        public Exporter(List<FileData> fileList, string path, ExportFormat format, List<ColumnType> columns) {
+        public Exporter(List<FileData> fileList, ExportFormat format, List<ColumnType> columns) {
             this.fileList = fileList;
-            this.path = path;
             this.format = format;
             this.columns = columns;
         }
 
         public void Start() {
-            if (fileList == null) return;
+            if (fileList == null || fileList.Count <= 0) throw new Exception(@"File list is empty");
             switch (format) {
                 case ExportFormat.CSV:
                     ExportAsCSV();
                     break;
-                case ExportFormat.JSON:
-                    ExportAsJSON();
-                    break;
                 case ExportFormat.XML:
                     ExportAsXML();
+                    break;
+                case ExportFormat.JSON:
+                    ExportAsJSON();
                     break;
                 default:
                     throw new Exception(@"Invalid export format");
@@ -39,25 +35,37 @@ namespace Archiver {
 
         private void ExportAsCSV() {
             var stringBuilder = new StringBuilder();
-            foreach (var file in fileList) {
-                stringBuilder.Append(file.ToCSV(columns));
-                stringBuilder.Append(Environment.NewLine);
-            }
-            if (stringBuilder.Length <= 0) throw new Exception(@"File list is empty");
-            SaveToFile(stringBuilder);
-        }
-
-        private void ExportAsJSON() {
-            throw new NotImplementedException();
+            foreach (var file in fileList)
+                stringBuilder.AppendLine(ExportConverter.ToCSV(file, columns));
+            SaveToFile(stringBuilder.ToString());
         }
 
         private void ExportAsXML() {
-            throw new NotImplementedException();
+            var stringBuilder = new StringBuilder();
+            foreach (var file in fileList)
+                stringBuilder.Append(ExportConverter.ToXML(file, columns));
+            SaveToFile(stringBuilder.ToString());
         }
 
-        private void SaveToFile(StringBuilder stringBuilder) {
+        private void ExportAsJSON() {
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine(@"[");
+            foreach (var file in fileList)
+                stringBuilder.Append(ExportConverter.ToJSON(file, columns));
+            stringBuilder.AppendLine(@"]");
+            SaveToFile(stringBuilder.ToString().TrimEnd(','));
+        }
+
+        private void SaveToFile(string data) {
             try {
-                File.WriteAllText(path, stringBuilder.ToString());
+                var extension = format.ToString();
+                var saveFileDialog = new SaveFileDialog {
+                    DefaultExt = "." + extension.ToLower(),
+                    Filter = extension + @" format|." + extension.ToLower()
+                };
+                if (saveFileDialog.ShowDialog() != DialogResult.OK) return;
+                File.WriteAllText(saveFileDialog.FileName, data);
+                Dialogs.Info("Export written to:\n " + saveFileDialog.FileName);
             }
             catch (Exception e) {
                 throw new Exception(e.Message);

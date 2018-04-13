@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="ColumnType.cs" />
     <Compile Include="Dialogs.cs" />
+    <Compile Include="ExportConverter.cs" />
     <Compile Include="Exporter.cs" />
     <Compile Include="ExportForm.cs">
       <SubType>Form</SubType>

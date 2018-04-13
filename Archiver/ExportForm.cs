@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Archiver {
@@ -34,33 +35,16 @@ namespace Archiver {
         }
 
         private void btnMoveUp_Click(object sender, EventArgs e) {
-            // TODO
+            var index = chklistExclusions.SelectedIndex;
+            Debug.WriteLine(index);
         }
 
         private void btnMoveDown_Click(object sender, EventArgs e) {
             // TODO
         }
 
-        private void btnBrowse_Click(object sender, EventArgs e) {
-            SetSavePath();
-        }
-
-        private void txtPath_MouseClick(object sender, MouseEventArgs e) {
-            SetSavePath();
-        }
-
-        private void SetSavePath() {
-            var extension = (ExportFormat) cbxFormat.SelectedIndex;
-            saveFileDialog.DefaultExt = "." + extension;
-            saveFileDialog.Filter = extension + @" format|." + extension;
-            if (saveFileDialog.ShowDialog() != DialogResult.OK) return;
-            txtPath.Text = saveFileDialog.FileName;
-        }
-
         private void btnExport_Click(object sender, EventArgs e) {
-            if (txtPath.Text.Length <= 0)
-                Dialogs.Message(@"Invalid path name");
-            else if (chklistExclusions.CheckedItems.Count == 0)
+            if (chklistExclusions.CheckedItems.Count == 0)
                 Dialogs.Message(@"No fields selected");
             else
                 Export();
@@ -68,17 +52,15 @@ namespace Archiver {
 
         private void Export() {
             try {
-                var path = txtPath.Text;
                 var format = (ExportFormat) cbxFormat.SelectedIndex;
                 var columns = GetColumns();
-                var exporter = new Exporter(fileList, path, format, columns);
+                var exporter = new Exporter(fileList, format, columns);
                 exporter.Start();
-                Dialogs.Info(@"Export saved to: " + path, @"Done");
             }
             catch (Exception e) {
                 DialogResult = DialogResult.Abort;
                 Debug.WriteLine(e.StackTrace);
-                Dialogs.ErrorOK(@"Unable to export file:\n " + e.Message, @"Export Error");
+                Dialogs.ErrorOK("Unable to export file:\n " + e.Message, @"Export Error");
             }
             finally {
                 Close();
@@ -89,7 +71,7 @@ namespace Archiver {
             var columns = new List<ColumnType>();
             for (var i = 0; i < chklistExclusions.Items.Count; i++)
                 if (chklistExclusions.GetItemChecked(i))
-                    columns.Add((ColumnType) i);
+                    columns.Add((ColumnType)Enum.Parse(typeof(ColumnType), chklistExclusions.GetItemText(i).Replace(" ", "")));
             return columns;
         }
 
