@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Archiver {
@@ -87,6 +88,13 @@ namespace Archiver {
 
         private bool CheckSearchFilter(FileSystemInfo file) {
             if (!searchFilter.Enabled) return true;
+            if (searchFilter.Extensions != SearchFilter.DEFAULT_EXT) {
+                // TODO UNDER CONSTRUCTION
+                /*if (searchFilter.Extensions.Any(ext => ext == file.Extension))
+                    return searchFilter.ExtensionFilter == ExtensionFilter.Inclusive;
+                return false; // Extension doesn't match filter
+                */
+            }
             var compare = 0;
             if (searchFilter.Style == SearchStyle.DateModified)
                 compare = file.LastWriteTime.CompareTo(searchFilter.Date);

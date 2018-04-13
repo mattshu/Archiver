@@ -48,27 +48,31 @@ namespace Archiver
             this.btnClose = new System.Windows.Forms.Button();
             this.btnExport = new System.Windows.Forms.Button();
             this.btnScan = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.panelExtensionFilter = new System.Windows.Forms.Panel();
+            this.radInclude = new System.Windows.Forms.RadioButton();
+            this.radExclude = new System.Windows.Forms.RadioButton();
             this.lblByExtension = new System.Windows.Forms.Label();
-            this.txtFilterByExtension = new System.Windows.Forms.TextBox();
-            this.chkFilterByExtension = new System.Windows.Forms.CheckBox();
-            this.radNewerThan = new System.Windows.Forms.RadioButton();
-            this.radOlderThan = new System.Windows.Forms.RadioButton();
-            this.chkIncludeSubDirs = new System.Windows.Forms.CheckBox();
-            this.chkFilter = new System.Windows.Forms.CheckBox();
             this.cbxSearchStyle = new System.Windows.Forms.ComboBox();
+            this.txtFilterByExtension = new System.Windows.Forms.TextBox();
+            this.chkFilter = new System.Windows.Forms.CheckBox();
+            this.chkFilterByExtension = new System.Windows.Forms.CheckBox();
+            this.radOlderThan = new System.Windows.Forms.RadioButton();
+            this.radNewerThan = new System.Windows.Forms.RadioButton();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkIncludeSubDirs = new System.Windows.Forms.CheckBox();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.tslblFileCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsseparator1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.contextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panelTop.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.panelExtensionFilter.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.statusStrip.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenu
@@ -251,93 +255,65 @@ namespace Archiver
             this.btnScan.UseVisualStyleBackColor = true;
             this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
             // 
-            // groupBox1
+            // groupBox2
             // 
-            this.groupBox1.Controls.Add(this.chkIncludeSubDirs);
-            this.groupBox1.Location = new System.Drawing.Point(123, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(139, 85);
-            this.groupBox1.TabIndex = 9;
-            this.groupBox1.TabStop = false;
+            this.groupBox2.Controls.Add(this.panelExtensionFilter);
+            this.groupBox2.Controls.Add(this.lblByExtension);
+            this.groupBox2.Controls.Add(this.cbxSearchStyle);
+            this.groupBox2.Controls.Add(this.txtFilterByExtension);
+            this.groupBox2.Controls.Add(this.chkFilter);
+            this.groupBox2.Controls.Add(this.chkFilterByExtension);
+            this.groupBox2.Controls.Add(this.radOlderThan);
+            this.groupBox2.Controls.Add(this.radNewerThan);
+            this.groupBox2.Controls.Add(this.dateFilterDate);
+            this.groupBox2.Location = new System.Drawing.Point(268, 3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(653, 85);
+            this.groupBox2.TabIndex = 9;
+            this.groupBox2.TabStop = false;
+            // 
+            // panelExtensionFilter
+            // 
+            this.panelExtensionFilter.Controls.Add(this.radInclude);
+            this.panelExtensionFilter.Controls.Add(this.radExclude);
+            this.panelExtensionFilter.Location = new System.Drawing.Point(232, 47);
+            this.panelExtensionFilter.Name = "panelExtensionFilter";
+            this.panelExtensionFilter.Size = new System.Drawing.Size(138, 25);
+            this.panelExtensionFilter.TabIndex = 12;
+            // 
+            // radInclude
+            // 
+            this.radInclude.AutoSize = true;
+            this.radInclude.Checked = true;
+            this.radInclude.Enabled = false;
+            this.radInclude.Location = new System.Drawing.Point(0, 2);
+            this.radInclude.Name = "radInclude";
+            this.radInclude.Size = new System.Drawing.Size(60, 17);
+            this.radInclude.TabIndex = 8;
+            this.radInclude.TabStop = true;
+            this.radInclude.Text = "Include";
+            this.radInclude.UseVisualStyleBackColor = true;
+            // 
+            // radExclude
+            // 
+            this.radExclude.AutoSize = true;
+            this.radExclude.Enabled = false;
+            this.radExclude.Location = new System.Drawing.Point(66, 2);
+            this.radExclude.Name = "radExclude";
+            this.radExclude.Size = new System.Drawing.Size(63, 17);
+            this.radExclude.TabIndex = 8;
+            this.radExclude.Text = "Exclude";
+            this.radExclude.UseVisualStyleBackColor = true;
             // 
             // lblByExtension
             // 
             this.lblByExtension.AutoSize = true;
             this.lblByExtension.Enabled = false;
-            this.lblByExtension.Location = new System.Drawing.Point(232, 50);
+            this.lblByExtension.Location = new System.Drawing.Point(108, 69);
             this.lblByExtension.Name = "lblByExtension";
-            this.lblByExtension.Size = new System.Drawing.Size(98, 13);
+            this.lblByExtension.Size = new System.Drawing.Size(80, 13);
             this.lblByExtension.TabIndex = 11;
-            this.lblByExtension.Text = "(*.txt, *.doc, *.docx)";
-            // 
-            // txtFilterByExtension
-            // 
-            this.txtFilterByExtension.Enabled = false;
-            this.txtFilterByExtension.Location = new System.Drawing.Point(102, 47);
-            this.txtFilterByExtension.Name = "txtFilterByExtension";
-            this.txtFilterByExtension.Size = new System.Drawing.Size(124, 20);
-            this.txtFilterByExtension.TabIndex = 10;
-            this.txtFilterByExtension.Text = "*.*";
-            // 
-            // chkFilterByExtension
-            // 
-            this.chkFilterByExtension.AutoSize = true;
-            this.chkFilterByExtension.Enabled = false;
-            this.chkFilterByExtension.Location = new System.Drawing.Point(12, 50);
-            this.chkFilterByExtension.Name = "chkFilterByExtension";
-            this.chkFilterByExtension.Size = new System.Drawing.Size(87, 17);
-            this.chkFilterByExtension.TabIndex = 9;
-            this.chkFilterByExtension.Text = "By Extension";
-            this.chkFilterByExtension.UseVisualStyleBackColor = true;
-            this.chkFilterByExtension.CheckedChanged += new System.EventHandler(this.chkFilterByExtension_CheckedChanged);
-            // 
-            // radNewerThan
-            // 
-            this.radNewerThan.AutoSize = true;
-            this.radNewerThan.Enabled = false;
-            this.radNewerThan.Location = new System.Drawing.Point(313, 20);
-            this.radNewerThan.Name = "radNewerThan";
-            this.radNewerThan.Size = new System.Drawing.Size(80, 17);
-            this.radNewerThan.TabIndex = 8;
-            this.radNewerThan.Text = "Newer than";
-            this.radNewerThan.UseVisualStyleBackColor = true;
-            // 
-            // radOlderThan
-            // 
-            this.radOlderThan.AutoSize = true;
-            this.radOlderThan.Checked = true;
-            this.radOlderThan.Enabled = false;
-            this.radOlderThan.Location = new System.Drawing.Point(233, 20);
-            this.radOlderThan.Name = "radOlderThan";
-            this.radOlderThan.Size = new System.Drawing.Size(74, 17);
-            this.radOlderThan.TabIndex = 8;
-            this.radOlderThan.TabStop = true;
-            this.radOlderThan.Text = "Older than";
-            this.radOlderThan.UseVisualStyleBackColor = true;
-            this.radOlderThan.CheckedChanged += new System.EventHandler(this.radOlderThan_CheckedChanged);
-            // 
-            // chkIncludeSubDirs
-            // 
-            this.chkIncludeSubDirs.AutoSize = true;
-            this.chkIncludeSubDirs.Checked = true;
-            this.chkIncludeSubDirs.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIncludeSubDirs.Location = new System.Drawing.Point(6, 19);
-            this.chkIncludeSubDirs.Name = "chkIncludeSubDirs";
-            this.chkIncludeSubDirs.Size = new System.Drawing.Size(131, 17);
-            this.chkIncludeSubDirs.TabIndex = 5;
-            this.chkIncludeSubDirs.Text = "Include Subdirectories";
-            this.chkIncludeSubDirs.UseVisualStyleBackColor = true;
-            // 
-            // chkFilter
-            // 
-            this.chkFilter.AutoSize = true;
-            this.chkFilter.Location = new System.Drawing.Point(12, 21);
-            this.chkFilter.Name = "chkFilter";
-            this.chkFilter.Size = new System.Drawing.Size(48, 17);
-            this.chkFilter.TabIndex = 6;
-            this.chkFilter.Text = "Filter";
-            this.chkFilter.UseVisualStyleBackColor = true;
-            this.chkFilter.CheckedChanged += new System.EventHandler(this.chkFilter_CheckedChanged);
+            this.lblByExtension.Text = ".txt, .doc, .docx";
             // 
             // cbxSearchStyle
             // 
@@ -353,6 +329,83 @@ namespace Archiver
             this.cbxSearchStyle.Size = new System.Drawing.Size(160, 21);
             this.cbxSearchStyle.TabIndex = 7;
             this.cbxSearchStyle.SelectedIndexChanged += new System.EventHandler(this.cbxSearchStyle_SelectedIndexChanged);
+            // 
+            // txtFilterByExtension
+            // 
+            this.txtFilterByExtension.Enabled = false;
+            this.txtFilterByExtension.Location = new System.Drawing.Point(102, 47);
+            this.txtFilterByExtension.Name = "txtFilterByExtension";
+            this.txtFilterByExtension.Size = new System.Drawing.Size(124, 20);
+            this.txtFilterByExtension.TabIndex = 10;
+            this.txtFilterByExtension.Enter += new System.EventHandler(this.txtFilterByExtension_Enter);
+            // 
+            // chkFilter
+            // 
+            this.chkFilter.AutoSize = true;
+            this.chkFilter.Location = new System.Drawing.Point(12, 21);
+            this.chkFilter.Name = "chkFilter";
+            this.chkFilter.Size = new System.Drawing.Size(48, 17);
+            this.chkFilter.TabIndex = 6;
+            this.chkFilter.Text = "Filter";
+            this.chkFilter.UseVisualStyleBackColor = true;
+            this.chkFilter.CheckedChanged += new System.EventHandler(this.chkFilter_CheckedChanged);
+            // 
+            // chkFilterByExtension
+            // 
+            this.chkFilterByExtension.AutoSize = true;
+            this.chkFilterByExtension.Enabled = false;
+            this.chkFilterByExtension.Location = new System.Drawing.Point(12, 50);
+            this.chkFilterByExtension.Name = "chkFilterByExtension";
+            this.chkFilterByExtension.Size = new System.Drawing.Size(87, 17);
+            this.chkFilterByExtension.TabIndex = 9;
+            this.chkFilterByExtension.Text = "By Extension";
+            this.chkFilterByExtension.UseVisualStyleBackColor = true;
+            this.chkFilterByExtension.CheckedChanged += new System.EventHandler(this.chkFilterByExtension_CheckedChanged);
+            // 
+            // radOlderThan
+            // 
+            this.radOlderThan.AutoSize = true;
+            this.radOlderThan.Checked = true;
+            this.radOlderThan.Enabled = false;
+            this.radOlderThan.Location = new System.Drawing.Point(232, 20);
+            this.radOlderThan.Name = "radOlderThan";
+            this.radOlderThan.Size = new System.Drawing.Size(74, 17);
+            this.radOlderThan.TabIndex = 8;
+            this.radOlderThan.TabStop = true;
+            this.radOlderThan.Text = "Older than";
+            this.radOlderThan.UseVisualStyleBackColor = true;
+            // 
+            // radNewerThan
+            // 
+            this.radNewerThan.AutoSize = true;
+            this.radNewerThan.Enabled = false;
+            this.radNewerThan.Location = new System.Drawing.Point(312, 20);
+            this.radNewerThan.Name = "radNewerThan";
+            this.radNewerThan.Size = new System.Drawing.Size(80, 17);
+            this.radNewerThan.TabIndex = 8;
+            this.radNewerThan.Text = "Newer than";
+            this.radNewerThan.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.chkIncludeSubDirs);
+            this.groupBox1.Location = new System.Drawing.Point(123, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(139, 85);
+            this.groupBox1.TabIndex = 9;
+            this.groupBox1.TabStop = false;
+            // 
+            // chkIncludeSubDirs
+            // 
+            this.chkIncludeSubDirs.AutoSize = true;
+            this.chkIncludeSubDirs.Checked = true;
+            this.chkIncludeSubDirs.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkIncludeSubDirs.Location = new System.Drawing.Point(6, 19);
+            this.chkIncludeSubDirs.Name = "chkIncludeSubDirs";
+            this.chkIncludeSubDirs.Size = new System.Drawing.Size(131, 17);
+            this.chkIncludeSubDirs.TabIndex = 5;
+            this.chkIncludeSubDirs.Text = "Include Subdirectories";
+            this.chkIncludeSubDirs.UseVisualStyleBackColor = true;
             // 
             // statusStrip
             // 
@@ -384,22 +437,6 @@ namespace Archiver
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.lblByExtension);
-            this.groupBox2.Controls.Add(this.cbxSearchStyle);
-            this.groupBox2.Controls.Add(this.txtFilterByExtension);
-            this.groupBox2.Controls.Add(this.chkFilter);
-            this.groupBox2.Controls.Add(this.chkFilterByExtension);
-            this.groupBox2.Controls.Add(this.radOlderThan);
-            this.groupBox2.Controls.Add(this.radNewerThan);
-            this.groupBox2.Controls.Add(this.dateFilterDate);
-            this.groupBox2.Location = new System.Drawing.Point(268, 3);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(653, 85);
-            this.groupBox2.TabIndex = 9;
-            this.groupBox2.TabStop = false;
-            // 
             // ArchiverMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -417,12 +454,14 @@ namespace Archiver
             this.contextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.panelTop.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.panelExtensionFilter.ResumeLayout(false);
+            this.panelExtensionFilter.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -460,6 +499,9 @@ namespace Archiver
         private DataGridViewTextBoxColumn colDateCreated;
         private DataGridViewTextBoxColumn colPath;
         private GroupBox groupBox2;
+        private RadioButton radExclude;
+        private Panel panelExtensionFilter;
+        private RadioButton radInclude;
     }
 }
 

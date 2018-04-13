@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Archiver {
     /*  (in no particular order)
      *  
-     *  TODO  1. MoveUp, MoveDown in Export form
-     *  TODO  2. Search by extensions
-     *  TODO  3. 
+     *  TODO  1. Search by extensions
+     *  TODO  2. 
      *  
      */
 
@@ -21,6 +22,7 @@ namespace Archiver {
         private List<FileData> fileList = new List<FileData>();
         private string parentFolder;
         private SortOrder sortOrder = SortOrder.Ascending;
+        private const string INVALID_EXTENSION_MSG = "Invalid extensions";
 
         private void ArchiverMainWindow_Shown(object sender, EventArgs e) {
             cbxSearchStyle.SelectedIndex = 0;
@@ -65,16 +67,32 @@ namespace Archiver {
             btnRefresh.Enabled = true;
         }
 
-        private void radOlderThan_CheckedChanged(object sender, EventArgs e) {
-            searchFilter.Period = GetSearchPeriod();
-        }
-
         private void chkFilter_CheckedChanged(object sender, EventArgs e) {
             EnableFilterControls(chkFilter.Checked);
+            if (!chkFilter.Checked) EnableExtensionFilterControls(false);
         }
 
         private void chkFilterByExtension_CheckedChanged(object sender, EventArgs e) {
-            txtFilterByExtension.Enabled = chkFilterByExtension.Checked;
+            EnableExtensionFilterControls(chkFilterByExtension.Checked);
+            txtFilterByExtension.ResetText();
+        }
+
+        private void EnableExtensionFilterControls(bool condition) {
+            chkFilterByExtension.Checked = condition;
+            txtFilterByExtension.Enabled = condition;
+            radInclude.Enabled = condition;
+            radExclude.Enabled = condition;
+        }
+
+        private void txtFilterByExtension_Enter(object sender, EventArgs e) {
+            if (txtFilterByExtension.Tag != null) // Tag used as an error flag
+                ResetExtensionFilterError();
+        }
+
+        private void ResetExtensionFilterError() {
+            txtFilterByExtension.Tag = null;
+            if (txtFilterByExtension.Text == INVALID_EXTENSION_MSG)
+                txtFilterByExtension.ResetText();
         }
 
         private void EnableFilterControls(bool condition) {
@@ -83,7 +101,6 @@ namespace Archiver {
             radNewerThan.Enabled = condition;
             dateFilterDate.Enabled = condition;
             chkFilterByExtension.Enabled = condition;
-            txtFilterByExtension.Enabled = condition;
         }
 
         private void cbxSearchStyle_SelectedIndexChanged(object sender, EventArgs e) {
@@ -168,13 +185,30 @@ namespace Archiver {
         }
 
         private void SetSearchFilter() {
+            ValidateExtensionFilter();
             searchFilter = new SearchFilter {
+                Enabled = chkFilter.Checked,
                 Style = GetSearchStyle(),
                 Period = GetSearchPeriod(),
                 Date = dateFilterDate.Value,
                 Option = GetSearchOption(),
-                Enabled = chkFilter.Checked
+                Extensions = GetExtensions(),
+                ExtensionFilter = GetExtensionFilter()
             };
+        }
+
+        private void ValidateExtensionFilter() {
+            var ILLEGAL_CHARS = "<>:\"/\\|?*".ToCharArray();
+            var text = txtFilterByExtension.Text;
+            var extensions = text.Replace("*", "").Split(',');
+            if (extensions.Any(ext => !ext.StartsWith(".") || ext.Count(x => x.Equals('.')) > 1 || ext.IndexOfAny(ILLEGAL_CHARS) >= 0))
+                ExtensionFormatError();
+        }
+
+        private void ExtensionFormatError() {
+            txtFilterByExtension.Tag = true; // Tag used as an error flag
+            txtFilterByExtension.Text = INVALID_EXTENSION_MSG;
+            EnableExtensionFilterControls(false);
         }
 
         private SearchStyle GetSearchStyle() {
@@ -187,6 +221,15 @@ namespace Archiver {
 
         private SearchOption GetSearchOption() {
             return chkIncludeSubDirs.Checked ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+        }
+
+        private string[] GetExtensions() {
+            var text = txtFilterByExtension.Text;
+            return text == INVALID_EXTENSION_MSG ? SearchFilter.DEFAULT_EXT : text.Split(',');
+        }
+
+        private ExtensionFilter GetExtensionFilter() {
+            return radInclude.Checked ? ExtensionFilter.Inclusive : ExtensionFilter.Exclusive;
         }
 
         private void BuildNewFileList() {
@@ -224,5 +267,6 @@ namespace Archiver {
             InitializeComponent();
             searchFilter = new SearchFilter();
         }
+
     }
 }
