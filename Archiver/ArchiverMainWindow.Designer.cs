@@ -36,6 +36,13 @@ namespace Archiver
             this.ctxOpenFile = new System.Windows.Forms.ToolStripMenuItem();
             this.dateFilterDate = new System.Windows.Forms.DateTimePicker();
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.colFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colExtension = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDateModified = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDateAccessed = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDateCreated = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelTop = new System.Windows.Forms.Panel();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
@@ -55,18 +62,13 @@ namespace Archiver
             this.tslblFileCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsseparator1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.colFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colExtension = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDateModified = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDateAccessed = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDateCreated = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.contextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panelTop.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.statusStrip.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenu
@@ -96,7 +98,7 @@ namespace Archiver
             this.dateFilterDate.CustomFormat = "MM/dd/yyyy h:mm tt";
             this.dateFilterDate.Enabled = false;
             this.dateFilterDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateFilterDate.Location = new System.Drawing.Point(394, 46);
+            this.dateFilterDate.Location = new System.Drawing.Point(399, 17);
             this.dateFilterDate.Name = "dateFilterDate";
             this.dateFilterDate.Size = new System.Drawing.Size(146, 20);
             this.dateFilterDate.TabIndex = 3;
@@ -129,210 +131,6 @@ namespace Archiver
             this.dataGridView.Size = new System.Drawing.Size(1040, 445);
             this.dataGridView.TabIndex = 1;
             this.dataGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_ColumnHeaderMouseClick);
-            // 
-            // panelTop
-            // 
-            this.panelTop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelTop.Controls.Add(this.btnRefresh);
-            this.panelTop.Controls.Add(this.btnClose);
-            this.panelTop.Controls.Add(this.btnExport);
-            this.panelTop.Controls.Add(this.btnScan);
-            this.panelTop.Controls.Add(this.groupBox1);
-            this.panelTop.Location = new System.Drawing.Point(0, 0);
-            this.panelTop.MinimumSize = new System.Drawing.Size(700, 43);
-            this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(1047, 96);
-            this.panelTop.TabIndex = 6;
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Enabled = false;
-            this.btnRefresh.Location = new System.Drawing.Point(9, 54);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(108, 34);
-            this.btnRefresh.TabIndex = 4;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // btnClose
-            // 
-            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnClose.Location = new System.Drawing.Point(927, 53);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnClose.Size = new System.Drawing.Size(108, 34);
-            this.btnClose.TabIndex = 1;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // btnExport
-            // 
-            this.btnExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnExport.Location = new System.Drawing.Point(927, 10);
-            this.btnExport.Name = "btnExport";
-            this.btnExport.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnExport.Size = new System.Drawing.Size(108, 34);
-            this.btnExport.TabIndex = 1;
-            this.btnExport.Text = "Export...";
-            this.btnExport.UseVisualStyleBackColor = true;
-            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
-            // 
-            // btnScan
-            // 
-            this.btnScan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnScan.Location = new System.Drawing.Point(9, 11);
-            this.btnScan.Name = "btnScan";
-            this.btnScan.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnScan.Size = new System.Drawing.Size(108, 34);
-            this.btnScan.TabIndex = 1;
-            this.btnScan.Text = "Scan Directory...";
-            this.btnScan.UseVisualStyleBackColor = true;
-            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.lblByExtension);
-            this.groupBox1.Controls.Add(this.txtFilterByExtension);
-            this.groupBox1.Controls.Add(this.chkFilterByExtension);
-            this.groupBox1.Controls.Add(this.radNewerThan);
-            this.groupBox1.Controls.Add(this.dateFilterDate);
-            this.groupBox1.Controls.Add(this.radOlderThan);
-            this.groupBox1.Controls.Add(this.chkIncludeSubDirs);
-            this.groupBox1.Controls.Add(this.chkFilter);
-            this.groupBox1.Controls.Add(this.cbxSearchStyle);
-            this.groupBox1.Location = new System.Drawing.Point(123, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(798, 85);
-            this.groupBox1.TabIndex = 9;
-            this.groupBox1.TabStop = false;
-            // 
-            // lblByExtension
-            // 
-            this.lblByExtension.AutoSize = true;
-            this.lblByExtension.Enabled = false;
-            this.lblByExtension.Location = new System.Drawing.Point(394, 18);
-            this.lblByExtension.Name = "lblByExtension";
-            this.lblByExtension.Size = new System.Drawing.Size(98, 13);
-            this.lblByExtension.TabIndex = 11;
-            this.lblByExtension.Text = "(*.txt, *.doc, *.docx)";
-            // 
-            // txtFilterByExtension
-            // 
-            this.txtFilterByExtension.Enabled = false;
-            this.txtFilterByExtension.Location = new System.Drawing.Point(228, 15);
-            this.txtFilterByExtension.Name = "txtFilterByExtension";
-            this.txtFilterByExtension.Size = new System.Drawing.Size(160, 20);
-            this.txtFilterByExtension.TabIndex = 10;
-            this.txtFilterByExtension.Text = "*.*";
-            // 
-            // chkFilterByExtension
-            // 
-            this.chkFilterByExtension.AutoSize = true;
-            this.chkFilterByExtension.Enabled = false;
-            this.chkFilterByExtension.Location = new System.Drawing.Point(143, 18);
-            this.chkFilterByExtension.Name = "chkFilterByExtension";
-            this.chkFilterByExtension.Size = new System.Drawing.Size(87, 17);
-            this.chkFilterByExtension.TabIndex = 9;
-            this.chkFilterByExtension.Text = "By Extension";
-            this.chkFilterByExtension.UseVisualStyleBackColor = true;
-            this.chkFilterByExtension.CheckedChanged += new System.EventHandler(this.chkFilterByExtension_CheckedChanged);
-            // 
-            // radNewerThan
-            // 
-            this.radNewerThan.AutoSize = true;
-            this.radNewerThan.Enabled = false;
-            this.radNewerThan.Location = new System.Drawing.Point(308, 49);
-            this.radNewerThan.Name = "radNewerThan";
-            this.radNewerThan.Size = new System.Drawing.Size(80, 17);
-            this.radNewerThan.TabIndex = 8;
-            this.radNewerThan.Text = "Newer than";
-            this.radNewerThan.UseVisualStyleBackColor = true;
-            // 
-            // radOlderThan
-            // 
-            this.radOlderThan.AutoSize = true;
-            this.radOlderThan.Checked = true;
-            this.radOlderThan.Enabled = false;
-            this.radOlderThan.Location = new System.Drawing.Point(228, 49);
-            this.radOlderThan.Name = "radOlderThan";
-            this.radOlderThan.Size = new System.Drawing.Size(74, 17);
-            this.radOlderThan.TabIndex = 8;
-            this.radOlderThan.TabStop = true;
-            this.radOlderThan.Text = "Older than";
-            this.radOlderThan.UseVisualStyleBackColor = true;
-            this.radOlderThan.CheckedChanged += new System.EventHandler(this.radOlderThan_CheckedChanged);
-            // 
-            // chkIncludeSubDirs
-            // 
-            this.chkIncludeSubDirs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkIncludeSubDirs.AutoSize = true;
-            this.chkIncludeSubDirs.Checked = true;
-            this.chkIncludeSubDirs.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIncludeSubDirs.Location = new System.Drawing.Point(6, 19);
-            this.chkIncludeSubDirs.Name = "chkIncludeSubDirs";
-            this.chkIncludeSubDirs.Size = new System.Drawing.Size(131, 17);
-            this.chkIncludeSubDirs.TabIndex = 5;
-            this.chkIncludeSubDirs.Text = "Include Subdirectories";
-            this.chkIncludeSubDirs.UseVisualStyleBackColor = true;
-            // 
-            // chkFilter
-            // 
-            this.chkFilter.AutoSize = true;
-            this.chkFilter.Location = new System.Drawing.Point(7, 50);
-            this.chkFilter.Name = "chkFilter";
-            this.chkFilter.Size = new System.Drawing.Size(48, 17);
-            this.chkFilter.TabIndex = 6;
-            this.chkFilter.Text = "Filter";
-            this.chkFilter.UseVisualStyleBackColor = true;
-            this.chkFilter.CheckedChanged += new System.EventHandler(this.chkFilter_CheckedChanged);
-            // 
-            // cbxSearchStyle
-            // 
-            this.cbxSearchStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxSearchStyle.Enabled = false;
-            this.cbxSearchStyle.FormattingEnabled = true;
-            this.cbxSearchStyle.Items.AddRange(new object[] {
-            "Date Modified",
-            "Date Accessed",
-            "Date Created"});
-            this.cbxSearchStyle.Location = new System.Drawing.Point(61, 45);
-            this.cbxSearchStyle.Name = "cbxSearchStyle";
-            this.cbxSearchStyle.Size = new System.Drawing.Size(160, 21);
-            this.cbxSearchStyle.TabIndex = 7;
-            this.cbxSearchStyle.SelectedIndexChanged += new System.EventHandler(this.cbxSearchStyle_SelectedIndexChanged);
-            // 
-            // statusStrip
-            // 
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tslblFileCount,
-            this.tsseparator1,
-            this.toolStripStatusLabel1});
-            this.statusStrip.Location = new System.Drawing.Point(0, 553);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(1047, 22);
-            this.statusStrip.TabIndex = 7;
-            this.statusStrip.Text = "statusStrip";
-            // 
-            // tslblFileCount
-            // 
-            this.tslblFileCount.Name = "tslblFileCount";
-            this.tslblFileCount.Size = new System.Drawing.Size(0, 17);
-            // 
-            // tsseparator1
-            // 
-            this.tsseparator1.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
-            this.tsseparator1.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
-            this.tsseparator1.Name = "tsseparator1";
-            this.tsseparator1.Size = new System.Drawing.Size(4, 17);
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
-            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
             // colFile
             // 
@@ -390,6 +188,218 @@ namespace Archiver
             this.colPath.ReadOnly = true;
             this.colPath.Width = 350;
             // 
+            // panelTop
+            // 
+            this.panelTop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelTop.Controls.Add(this.btnRefresh);
+            this.panelTop.Controls.Add(this.btnClose);
+            this.panelTop.Controls.Add(this.btnExport);
+            this.panelTop.Controls.Add(this.btnScan);
+            this.panelTop.Controls.Add(this.groupBox2);
+            this.panelTop.Controls.Add(this.groupBox1);
+            this.panelTop.Location = new System.Drawing.Point(0, 0);
+            this.panelTop.MinimumSize = new System.Drawing.Size(700, 43);
+            this.panelTop.Name = "panelTop";
+            this.panelTop.Size = new System.Drawing.Size(1047, 96);
+            this.panelTop.TabIndex = 6;
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Enabled = false;
+            this.btnRefresh.Location = new System.Drawing.Point(9, 54);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(108, 34);
+            this.btnRefresh.TabIndex = 4;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnClose.Location = new System.Drawing.Point(927, 53);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnClose.Size = new System.Drawing.Size(108, 34);
+            this.btnClose.TabIndex = 1;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnExport
+            // 
+            this.btnExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExport.Location = new System.Drawing.Point(927, 10);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnExport.Size = new System.Drawing.Size(108, 34);
+            this.btnExport.TabIndex = 1;
+            this.btnExport.Text = "Export...";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
+            // btnScan
+            // 
+            this.btnScan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnScan.Location = new System.Drawing.Point(9, 11);
+            this.btnScan.Name = "btnScan";
+            this.btnScan.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnScan.Size = new System.Drawing.Size(108, 34);
+            this.btnScan.TabIndex = 1;
+            this.btnScan.Text = "Scan Directory...";
+            this.btnScan.UseVisualStyleBackColor = true;
+            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.chkIncludeSubDirs);
+            this.groupBox1.Location = new System.Drawing.Point(123, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(139, 85);
+            this.groupBox1.TabIndex = 9;
+            this.groupBox1.TabStop = false;
+            // 
+            // lblByExtension
+            // 
+            this.lblByExtension.AutoSize = true;
+            this.lblByExtension.Enabled = false;
+            this.lblByExtension.Location = new System.Drawing.Point(232, 50);
+            this.lblByExtension.Name = "lblByExtension";
+            this.lblByExtension.Size = new System.Drawing.Size(98, 13);
+            this.lblByExtension.TabIndex = 11;
+            this.lblByExtension.Text = "(*.txt, *.doc, *.docx)";
+            // 
+            // txtFilterByExtension
+            // 
+            this.txtFilterByExtension.Enabled = false;
+            this.txtFilterByExtension.Location = new System.Drawing.Point(102, 47);
+            this.txtFilterByExtension.Name = "txtFilterByExtension";
+            this.txtFilterByExtension.Size = new System.Drawing.Size(124, 20);
+            this.txtFilterByExtension.TabIndex = 10;
+            this.txtFilterByExtension.Text = "*.*";
+            // 
+            // chkFilterByExtension
+            // 
+            this.chkFilterByExtension.AutoSize = true;
+            this.chkFilterByExtension.Enabled = false;
+            this.chkFilterByExtension.Location = new System.Drawing.Point(12, 50);
+            this.chkFilterByExtension.Name = "chkFilterByExtension";
+            this.chkFilterByExtension.Size = new System.Drawing.Size(87, 17);
+            this.chkFilterByExtension.TabIndex = 9;
+            this.chkFilterByExtension.Text = "By Extension";
+            this.chkFilterByExtension.UseVisualStyleBackColor = true;
+            this.chkFilterByExtension.CheckedChanged += new System.EventHandler(this.chkFilterByExtension_CheckedChanged);
+            // 
+            // radNewerThan
+            // 
+            this.radNewerThan.AutoSize = true;
+            this.radNewerThan.Enabled = false;
+            this.radNewerThan.Location = new System.Drawing.Point(313, 20);
+            this.radNewerThan.Name = "radNewerThan";
+            this.radNewerThan.Size = new System.Drawing.Size(80, 17);
+            this.radNewerThan.TabIndex = 8;
+            this.radNewerThan.Text = "Newer than";
+            this.radNewerThan.UseVisualStyleBackColor = true;
+            // 
+            // radOlderThan
+            // 
+            this.radOlderThan.AutoSize = true;
+            this.radOlderThan.Checked = true;
+            this.radOlderThan.Enabled = false;
+            this.radOlderThan.Location = new System.Drawing.Point(233, 20);
+            this.radOlderThan.Name = "radOlderThan";
+            this.radOlderThan.Size = new System.Drawing.Size(74, 17);
+            this.radOlderThan.TabIndex = 8;
+            this.radOlderThan.TabStop = true;
+            this.radOlderThan.Text = "Older than";
+            this.radOlderThan.UseVisualStyleBackColor = true;
+            this.radOlderThan.CheckedChanged += new System.EventHandler(this.radOlderThan_CheckedChanged);
+            // 
+            // chkIncludeSubDirs
+            // 
+            this.chkIncludeSubDirs.AutoSize = true;
+            this.chkIncludeSubDirs.Checked = true;
+            this.chkIncludeSubDirs.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkIncludeSubDirs.Location = new System.Drawing.Point(6, 19);
+            this.chkIncludeSubDirs.Name = "chkIncludeSubDirs";
+            this.chkIncludeSubDirs.Size = new System.Drawing.Size(131, 17);
+            this.chkIncludeSubDirs.TabIndex = 5;
+            this.chkIncludeSubDirs.Text = "Include Subdirectories";
+            this.chkIncludeSubDirs.UseVisualStyleBackColor = true;
+            // 
+            // chkFilter
+            // 
+            this.chkFilter.AutoSize = true;
+            this.chkFilter.Location = new System.Drawing.Point(12, 21);
+            this.chkFilter.Name = "chkFilter";
+            this.chkFilter.Size = new System.Drawing.Size(48, 17);
+            this.chkFilter.TabIndex = 6;
+            this.chkFilter.Text = "Filter";
+            this.chkFilter.UseVisualStyleBackColor = true;
+            this.chkFilter.CheckedChanged += new System.EventHandler(this.chkFilter_CheckedChanged);
+            // 
+            // cbxSearchStyle
+            // 
+            this.cbxSearchStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxSearchStyle.Enabled = false;
+            this.cbxSearchStyle.FormattingEnabled = true;
+            this.cbxSearchStyle.Items.AddRange(new object[] {
+            "Date Modified",
+            "Date Accessed",
+            "Date Created"});
+            this.cbxSearchStyle.Location = new System.Drawing.Point(66, 16);
+            this.cbxSearchStyle.Name = "cbxSearchStyle";
+            this.cbxSearchStyle.Size = new System.Drawing.Size(160, 21);
+            this.cbxSearchStyle.TabIndex = 7;
+            this.cbxSearchStyle.SelectedIndexChanged += new System.EventHandler(this.cbxSearchStyle_SelectedIndexChanged);
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tslblFileCount,
+            this.tsseparator1,
+            this.toolStripStatusLabel1});
+            this.statusStrip.Location = new System.Drawing.Point(0, 553);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(1047, 22);
+            this.statusStrip.TabIndex = 7;
+            this.statusStrip.Text = "statusStrip";
+            // 
+            // tslblFileCount
+            // 
+            this.tslblFileCount.Name = "tslblFileCount";
+            this.tslblFileCount.Size = new System.Drawing.Size(0, 17);
+            // 
+            // tsseparator1
+            // 
+            this.tsseparator1.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.tsseparator1.BorderStyle = System.Windows.Forms.Border3DStyle.Etched;
+            this.tsseparator1.Name = "tsseparator1";
+            this.tsseparator1.Size = new System.Drawing.Size(4, 17);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.lblByExtension);
+            this.groupBox2.Controls.Add(this.cbxSearchStyle);
+            this.groupBox2.Controls.Add(this.txtFilterByExtension);
+            this.groupBox2.Controls.Add(this.chkFilter);
+            this.groupBox2.Controls.Add(this.chkFilterByExtension);
+            this.groupBox2.Controls.Add(this.radOlderThan);
+            this.groupBox2.Controls.Add(this.radNewerThan);
+            this.groupBox2.Controls.Add(this.dateFilterDate);
+            this.groupBox2.Location = new System.Drawing.Point(268, 3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(653, 85);
+            this.groupBox2.TabIndex = 9;
+            this.groupBox2.TabStop = false;
+            // 
             // ArchiverMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -411,6 +421,8 @@ namespace Archiver
             this.groupBox1.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -447,6 +459,7 @@ namespace Archiver
         private DataGridViewTextBoxColumn colDateAccessed;
         private DataGridViewTextBoxColumn colDateCreated;
         private DataGridViewTextBoxColumn colPath;
+        private GroupBox groupBox2;
     }
 }
 
