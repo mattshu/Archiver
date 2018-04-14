@@ -74,7 +74,6 @@ namespace Archiver {
 
         private void chkFilterByExtension_CheckedChanged(object sender, EventArgs e) {
             EnableExtensionFilterControls(chkFilterByExtension.Checked);
-            txtFilterByExtension.ResetText();
         }
 
         private void EnableExtensionFilterControls(bool condition) {
@@ -187,20 +186,22 @@ namespace Archiver {
         private void SetSearchFilter() {
             ValidateExtensionFilter();
             searchFilter = new SearchFilter {
-                Enabled = chkFilter.Checked,
+                FilterEnabled = chkFilter.Checked,
                 Style = GetSearchStyle(),
                 Period = GetSearchPeriod(),
                 Date = dateFilterDate.Value,
                 Option = GetSearchOption(),
                 Extensions = GetExtensions(),
-                ExtensionFilter = GetExtensionFilter()
+                ExtensionFilter = GetExtensionFilter(),
+                IncludeEmptyFiles = chkIncludeEmptyFiles.Checked
             };
         }
 
         private void ValidateExtensionFilter() {
-            var ILLEGAL_CHARS = "<>:\"/\\|?*".ToCharArray();
             var text = txtFilterByExtension.Text;
-            var extensions = text.Replace("*", "").Split(',');
+            if (string.IsNullOrEmpty(text)) return;
+            var ILLEGAL_CHARS = "<>:\"/\\|?*".ToCharArray();
+            var extensions = text.Replace("*", "").Replace(" ", "").Split(',');
             if (extensions.Any(ext => !ext.StartsWith(".") || ext.Count(x => x.Equals('.')) > 1 || ext.IndexOfAny(ILLEGAL_CHARS) >= 0))
                 ExtensionFormatError();
         }
@@ -225,7 +226,7 @@ namespace Archiver {
 
         private string[] GetExtensions() {
             var text = txtFilterByExtension.Text;
-            return text == INVALID_EXTENSION_MSG ? SearchFilter.DEFAULT_EXT : text.Split(',');
+            return string.IsNullOrEmpty(text) || text == INVALID_EXTENSION_MSG ? SearchFilter.DEFAULT_EXT : text.Replace("*", "").Replace(" ", "").Split(',');
         }
 
         private ExtensionFilter GetExtensionFilter() {
@@ -267,6 +268,6 @@ namespace Archiver {
             InitializeComponent();
             searchFilter = new SearchFilter();
         }
-
+        
     }
 }

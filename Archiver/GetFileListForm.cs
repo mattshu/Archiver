@@ -68,33 +68,20 @@ namespace Archiver {
             ReportProgress(progress, file);
         }
 
-        private void ReportProgress(int progress, FileInfo file) {
-            // Send updates every 100 files
-            if (progress % 100 == 0) {
-                backgroundWorker.ReportProgress(progress, file.Name);
-            }
+        private bool CheckSearchFilter(FileInfo file) {
+            if (!searchFilter.IncludeEmptyFiles && file.Length <= 0) return false;
+            if (!searchFilter.FilterEnabled) return true;
+            if (searchFilter.Extensions != SearchFilter.DEFAULT_EXT && !CheckExtensions(file)) return false;
+            return CheckSearchPeriod(file);
         }
 
-        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) {
-            var fname = (string) e.UserState;
-            var statusMsg = "Found: " + fname;
-            UpdateProgress(e.ProgressPercentage, statusMsg);
+        private bool CheckExtensions(FileInfo file) {
+            if (searchFilter.Extensions.Any(ext => ext == file.Extension))
+                return searchFilter.ExtensionFilter == ExtensionFilter.Inclusive;
+            return searchFilter.ExtensionFilter == ExtensionFilter.Exclusive;
         }
 
-        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
-            DialogResult = fileList.Count > 0 ? DialogResult.OK : DialogResult.None;
-            Close();
-        }
-
-        private bool CheckSearchFilter(FileSystemInfo file) {
-            if (!searchFilter.Enabled) return true;
-            if (searchFilter.Extensions != SearchFilter.DEFAULT_EXT) {
-                // TODO UNDER CONSTRUCTION
-                /*if (searchFilter.Extensions.Any(ext => ext == file.Extension))
-                    return searchFilter.ExtensionFilter == ExtensionFilter.Inclusive;
-                return false; // Extension doesn't match filter
-                */
-            }
+        private bool CheckSearchPeriod(FileInfo file) {
             var compare = 0;
             if (searchFilter.Style == SearchStyle.DateModified)
                 compare = file.LastWriteTime.CompareTo(searchFilter.Date);
@@ -109,6 +96,19 @@ namespace Archiver {
             return compare < 0;
         }
 
+        private void ReportProgress(int progress, FileInfo file) {
+            // Send updates every 100 files
+            if (progress % 100 == 0) {
+                backgroundWorker.ReportProgress(progress, file.Name);
+            }
+        }
+
+        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) {
+            var fname = (string) e.UserState;
+            var statusMsg = "Found: " + fname;
+            UpdateProgress(e.ProgressPercentage, statusMsg);
+        }
+
         private void UpdateProgress(int foundSoFar, string statusMsg) {
             lblFilesFound.Text = foundSoFar + @" files found so far";
             SetStatus(statusMsg);
@@ -117,5 +117,12 @@ namespace Archiver {
         private void SetStatus(string msg) {
             lblStatus.Text = msg;
         }
+
+        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
+            DialogResult = fileList.Count > 0 ? DialogResult.OK : DialogResult.None;
+            Close();
+        }
+
+
     }
 }
