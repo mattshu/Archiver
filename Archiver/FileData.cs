@@ -3,14 +3,6 @@ using System.IO;
 
 namespace Archiver {
     public class FileData {
-        public string Name { get; }
-        public string Extension { get; }
-        public string Size { get; }
-        public DateTime DateModified { get; }
-        public DateTime DateAccessed { get; }
-        public DateTime DateCreated { get; }
-        public string Path { get; }
-
         public FileData(string filePath) {
             var fileInfo = new FileInfo(filePath);
             Name = fileInfo.Name;
@@ -23,6 +15,13 @@ namespace Archiver {
         }
 
         public FileData(FileInfo fileInfo) : this(fileInfo.FullName) { }
+        public string Name { get; }
+        public string Extension { get; }
+        public string Size { get; }
+        public DateTime DateModified { get; }
+        public DateTime DateAccessed { get; }
+        public DateTime DateCreated { get; }
+        public string Path { get; }
 
         public string GetFilePath() {
             return Path + @"\\" + Name;
@@ -38,6 +37,5 @@ namespace Archiver {
             var num = Math.Round(bytes / Math.Pow(1024, place));
             return Math.Sign(byteCount) * num + " " + suf[place];
         }
-
     }
 }

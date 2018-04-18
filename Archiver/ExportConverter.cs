@@ -5,10 +5,9 @@ using System.Text;
 
 namespace Archiver {
     public static class ExportConverter {
-
         public static string ToCSV(FileData fileData, List<ColumnType> columns) {
             var stringBuilder = new StringBuilder();
-            foreach (var col in columns) 
+            foreach (var col in columns)
                 stringBuilder.Append(GetPropertyByColumn(fileData, col) + ",");
             return stringBuilder.ToString().TrimEnd(',');
         }
@@ -43,7 +42,7 @@ namespace Archiver {
             var property = fileData.GetType().GetProperty(col.ToString());
             if (property == null) return null;
             var value = property.GetValue(fileData, null);
-            return col == ColumnType.Path ? ((string)value).Replace("\\", "\\\\") : value;
+            return col == ColumnType.Path ? ((string) value).Replace("\\", "\\\\") : value;
         }
     }
 }

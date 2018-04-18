@@ -5,13 +5,13 @@ using System.Windows.Forms;
 
 namespace Archiver {
     internal class FileDataComparer : IComparer<FileData> {
-        public ColumnType Column { get; set; }
-        public SortOrder Order { get; set; }
-
         public FileDataComparer(ColumnType column, SortOrder order) {
             Column = column;
             Order = order;
         }
+
+        public ColumnType Column { get; set; }
+        public SortOrder Order { get; set; }
 
         public int Compare(FileData itemX, FileData itemY) {
             if (itemX == null && itemY == null)
@@ -53,7 +53,6 @@ namespace Archiver {
             }
 
             if (Order == SortOrder.Descending) value *= -1;
-            //Debug.WriteLine($"Sort result for {itemX.Name} -> {itemY.Name} ({value})");
             return value;
         }
 
@@ -78,8 +77,6 @@ namespace Archiver {
                 case "TB":
                     size *= 1024 * 1024 * 1024;
                     break;
-                case "PB": // TODO: Futureproof
-                case "EB": // ^
                 default:
                     break;
             }

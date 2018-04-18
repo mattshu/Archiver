@@ -6,9 +6,9 @@ using System.Windows.Forms;
 
 namespace Archiver {
     internal class Exporter {
+        private readonly List<ColumnType> columns;
         private readonly List<FileData> fileList;
         private readonly ExportFormat format;
-        private readonly List<ColumnType> columns;
 
         public Exporter(List<FileData> fileList, ExportFormat format, List<ColumnType> columns) {
             this.fileList = fileList;

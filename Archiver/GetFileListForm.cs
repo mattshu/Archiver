@@ -7,7 +7,6 @@ using System.Windows.Forms;
 
 namespace Archiver {
     public partial class GetFileListForm : Form {
-        public List<FileData> fileList { get; }
         private readonly string path;
         private readonly SearchFilter searchFilter;
 
@@ -22,6 +21,8 @@ namespace Archiver {
             fileList = new List<FileData>();
             this.searchFilter = searchFilter;
         }
+
+        public List<FileData> fileList { get; }
 
         private void GetFileListForm_Shown(object sender, EventArgs e) {
             btnCancel.Enabled = true;
@@ -98,9 +99,7 @@ namespace Archiver {
 
         private void ReportProgress(int progress, FileInfo file) {
             // Send updates every 100 files
-            if (progress % 100 == 0) {
-                backgroundWorker.ReportProgress(progress, file.Name);
-            }
+            if (progress % 100 == 0) backgroundWorker.ReportProgress(progress, file.Name);
         }
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e) {
@@ -122,7 +121,5 @@ namespace Archiver {
             DialogResult = fileList.Count > 0 ? DialogResult.OK : DialogResult.None;
             Close();
         }
-
-
     }
 }

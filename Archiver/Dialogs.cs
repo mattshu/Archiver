@@ -2,7 +2,6 @@
 
 namespace Archiver {
     public static class Dialogs {
-
         public static DialogResult YesNo(string message, string title = "Confirm") {
             return MessageBox.Show(message, title, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
         }

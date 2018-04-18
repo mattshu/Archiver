@@ -1,28 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Windows.Forms;
+using Archiver.Properties;
 
 namespace Archiver {
-    /*  (in no particular order)
-     *  
-     *  TODO  1. Search by extensions
-     *  TODO  2. 
-     *  
-     */
-
-
     public partial class ArchiverMainWindow : Form {
-
-        private SearchFilter searchFilter;
+        private const string INVALID_EXTENSION_MSG = "Invalid extensions";
 
         private List<FileData> fileList = new List<FileData>();
         private string parentFolder;
+
+        private SearchFilter searchFilter;
         private SortOrder sortOrder = SortOrder.Ascending;
-        private const string INVALID_EXTENSION_MSG = "Invalid extensions";
+
+        public ArchiverMainWindow() {
+            InitializeComponent();
+            searchFilter = new SearchFilter();
+        }
 
         private void ArchiverMainWindow_Shown(object sender, EventArgs e) {
             cbxSearchStyle.SelectedIndex = 0;
@@ -55,10 +54,10 @@ namespace Archiver {
         private void btnClose_Click(object sender, EventArgs e) {
             Close();
         }
-        
+
         private void dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e) {
             sortOrder = sortOrder == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
-            var fileDataComparer = new FileDataComparer((ColumnType)e.ColumnIndex, sortOrder);
+            var fileDataComparer = new FileDataComparer((ColumnType) e.ColumnIndex, sortOrder);
             fileList.Sort(fileDataComparer);
             dataGridView.Refresh();
         }
@@ -110,15 +109,14 @@ namespace Archiver {
         private void contextMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
             var name = (string) dataGridView.SelectedRows[0].Cells["File"].Value;
             var path = (string) dataGridView.SelectedRows[0].Cells["Path"].Value;
-            if (dataGridView.SelectedRows.Count == 1) {
+            if (dataGridView.SelectedRows.Count == 1)
                 if (e.ClickedItem == ctxOpenFileLocation) {
-                    System.Diagnostics.Process.Start("explorer.exe", path);
+                    Process.Start("explorer.exe", path);
                 }
                 else if (e.ClickedItem == ctxOpenFile) {
                     var pathToFile = path + "\\" + name;
-                    System.Diagnostics.Process.Start("explorer.exe", pathToFile);
+                    Process.Start("explorer.exe", pathToFile);
                 }
-            }
         }
 
         private void contextMenu_Opening(object sender, CancelEventArgs e) {
@@ -134,13 +132,13 @@ namespace Archiver {
         private void BuildDataGridViewColumns() {
             dataGridView.Columns.Clear();
             dataGridView.AutoGenerateColumns = false;
-            colFile = new DataGridViewTextBoxColumn { DataPropertyName = "Name", Name = "File" };
-            colExtension = new DataGridViewTextBoxColumn { DataPropertyName = "Extension", Name = "Extension" };
+            colFile = new DataGridViewTextBoxColumn {DataPropertyName = "Name", Name = "File"};
+            colExtension = new DataGridViewTextBoxColumn {DataPropertyName = "Extension", Name = "Extension"};
             colSize = new DataGridViewTextBoxColumn {DataPropertyName = "Size", Name = "Size"};
-            colDateModified = new DataGridViewTextBoxColumn { DataPropertyName = "DateModified", Name = "Date Modified" };
-            colDateAccessed = new DataGridViewTextBoxColumn { DataPropertyName = "DateAccessed", Name = "Date Accessed" };
-            colDateCreated = new DataGridViewTextBoxColumn { DataPropertyName = "DateCreated", Name = "Date Created" };
-            colPath = new DataGridViewTextBoxColumn { DataPropertyName = "Path", Name = "Path" };
+            colDateModified = new DataGridViewTextBoxColumn {DataPropertyName = "DateModified", Name = "Date Modified"};
+            colDateAccessed = new DataGridViewTextBoxColumn {DataPropertyName = "DateAccessed", Name = "Date Accessed"};
+            colDateCreated = new DataGridViewTextBoxColumn {DataPropertyName = "DateCreated", Name = "Date Created"};
+            colPath = new DataGridViewTextBoxColumn {DataPropertyName = "Path", Name = "Path"};
             dataGridView.Columns.AddRange(colFile, colExtension, colSize, colDateModified, colDateAccessed,
                 colDateCreated, colPath);
             LoadColumnWidths();
@@ -163,24 +161,24 @@ namespace Archiver {
         }
 
         private void SaveColumnWidths() {
-            Properties.Settings.Default.colFileWidth = dataGridView.Columns[0].Width;
-            Properties.Settings.Default.colExtWidth = dataGridView.Columns[1].Width;
-            Properties.Settings.Default.colSizeWidth = dataGridView.Columns[2].Width;
-            Properties.Settings.Default.colDateModWidth = dataGridView.Columns[3].Width;
-            Properties.Settings.Default.colDateAccWidth = dataGridView.Columns[4].Width;
-            Properties.Settings.Default.colDateCreateWidth = dataGridView.Columns[5].Width;
-            Properties.Settings.Default.colPathWidth = dataGridView.Columns[6].Width;
-            Properties.Settings.Default.Save();
+            Settings.Default.colFileWidth = dataGridView.Columns[0].Width;
+            Settings.Default.colExtWidth = dataGridView.Columns[1].Width;
+            Settings.Default.colSizeWidth = dataGridView.Columns[2].Width;
+            Settings.Default.colDateModWidth = dataGridView.Columns[3].Width;
+            Settings.Default.colDateAccWidth = dataGridView.Columns[4].Width;
+            Settings.Default.colDateCreateWidth = dataGridView.Columns[5].Width;
+            Settings.Default.colPathWidth = dataGridView.Columns[6].Width;
+            Settings.Default.Save();
         }
 
         private void LoadColumnWidths() {
-            dataGridView.Columns[0].Width = Properties.Settings.Default.colFileWidth;
-            dataGridView.Columns[1].Width = Properties.Settings.Default.colExtWidth;
-            dataGridView.Columns[2].Width = Properties.Settings.Default.colSizeWidth;
-            dataGridView.Columns[3].Width = Properties.Settings.Default.colDateModWidth;
-            dataGridView.Columns[4].Width = Properties.Settings.Default.colDateAccWidth;
-            dataGridView.Columns[5].Width = Properties.Settings.Default.colDateCreateWidth;
-            dataGridView.Columns[6].Width = Properties.Settings.Default.colPathWidth;
+            dataGridView.Columns[0].Width = Settings.Default.colFileWidth;
+            dataGridView.Columns[1].Width = Settings.Default.colExtWidth;
+            dataGridView.Columns[2].Width = Settings.Default.colSizeWidth;
+            dataGridView.Columns[3].Width = Settings.Default.colDateModWidth;
+            dataGridView.Columns[4].Width = Settings.Default.colDateAccWidth;
+            dataGridView.Columns[5].Width = Settings.Default.colDateCreateWidth;
+            dataGridView.Columns[6].Width = Settings.Default.colPathWidth;
         }
 
         private void SetSearchFilter() {
@@ -202,7 +200,8 @@ namespace Archiver {
             if (string.IsNullOrEmpty(text)) return;
             var ILLEGAL_CHARS = "<>:\"/\\|?*".ToCharArray();
             var extensions = text.Replace("*", "").Replace(" ", "").Split(',');
-            if (extensions.Any(ext => !ext.StartsWith(".") || ext.Count(x => x.Equals('.')) > 1 || ext.IndexOfAny(ILLEGAL_CHARS) >= 0))
+            if (extensions.Any(ext =>
+                !ext.StartsWith(".") || ext.Count(x => x.Equals('.')) > 1 || ext.IndexOfAny(ILLEGAL_CHARS) >= 0))
                 ExtensionFormatError();
         }
 
@@ -226,7 +225,9 @@ namespace Archiver {
 
         private string[] GetExtensions() {
             var text = txtFilterByExtension.Text;
-            return string.IsNullOrEmpty(text) || text == INVALID_EXTENSION_MSG ? SearchFilter.DEFAULT_EXT : text.Replace("*", "").Replace(" ", "").Split(',');
+            return string.IsNullOrEmpty(text) || text == INVALID_EXTENSION_MSG
+                ? SearchFilter.DEFAULT_EXT
+                : text.Replace("*", "").Replace(" ", "").Split(',');
         }
 
         private ExtensionFilter GetExtensionFilter() {
@@ -248,6 +249,7 @@ namespace Archiver {
         }
 
         private void LoadItemsFromFileList() {
+            SetFileCount(0);
             dataGridView.DataSource = null;
             BuildDataGridViewColumns();
             if (fileList.Count <= 0) {
@@ -256,18 +258,16 @@ namespace Archiver {
             }
             dataGridView.DataSource = fileList;
             btnRefresh.Enabled = true;
-            string fileCountText = "File count: " + fileList.Count;
+            SetFileCount(fileList.Count);
+        }
+
+        private void SetFileCount(int count) {
+            var fileCountText = count + " files found.";
             tslblFileCount.Text = fileCountText;
         }
 
         private static void AudioBeep() {
-            System.Media.SystemSounds.Asterisk.Play();
+            SystemSounds.Asterisk.Play();
         }
-
-        public ArchiverMainWindow() {
-            InitializeComponent();
-            searchFilter = new SearchFilter();
-        }
-        
     }
 }

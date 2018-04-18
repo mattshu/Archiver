@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Archiver {
@@ -30,7 +29,7 @@ namespace Archiver {
 
         private void PopulateFormatList() {
             foreach (var format in Enum.GetValues(typeof(ExportFormat)))
-                cbxFormat.Items.Add((ExportFormat)format);
+                cbxFormat.Items.Add((ExportFormat) format);
         }
 
         private void btnMoveUp_Click(object sender, EventArgs e) {
@@ -80,7 +79,8 @@ namespace Archiver {
             var columns = new List<ColumnType>();
             for (var i = 0; i < chklistExclusions.Items.Count; i++)
                 if (chklistExclusions.GetItemChecked(i))
-                    columns.Add((ColumnType)Enum.Parse(typeof(ColumnType), ((string)chklistExclusions.Items[i]).Replace(" ", "")));
+                    columns.Add((ColumnType) Enum.Parse(typeof(ColumnType),
+                        ((string) chklistExclusions.Items[i]).Replace(" ", "")));
             return columns;
         }
 
